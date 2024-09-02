@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Sevillana&display=swap');
+
+*{
+    font-family:"Sevillana",
+    sans-serif;
+}
+
+th{
+    background-color: #ADD8E6;    
+}
+
+th, td {
+   border: 1px solid lightgrey; 
+   padding: 0,5px;
+}
+
