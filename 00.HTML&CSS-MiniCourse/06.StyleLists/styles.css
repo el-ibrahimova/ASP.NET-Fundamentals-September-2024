@@ -1,0 +1,16 @@
+body{
+    background-color: #EDEDED;
+}
+
+h2{
+    background-color: #3C5168;
+    color: white;
+    text-decoration: underline;
+    letter-spacing: 1px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+section{
+    max-width: 600px;    
+}
