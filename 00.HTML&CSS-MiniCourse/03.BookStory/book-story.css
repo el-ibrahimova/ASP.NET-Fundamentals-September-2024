@@ -1,0 +1,10 @@
+main {
+    background: #DDDDDD;
+    border: 1px solid black;
+    padding: 12px;
+    max-width: 400px;
+}
+
+h1{
+    text-align: center;
+}
