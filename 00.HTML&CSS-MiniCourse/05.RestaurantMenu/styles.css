@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Sevillana&display=swap');
+
+* {
+    color: #687487;
+    text-align: center;
+}
+
+.subtitle {
+    font-style: italic;
+    color: black;
+}
+
+p {
+    font-family: "Sevillana", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
