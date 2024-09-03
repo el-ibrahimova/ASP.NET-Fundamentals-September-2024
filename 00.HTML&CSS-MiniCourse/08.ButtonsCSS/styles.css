@@ -1,0 +1,28 @@
+body {
+    background-color: lightgray;
+    font-family: Helvetica, sans-serif;
+}
+
+button {
+    border-radius: 14px;
+    border: 2px solid #333333;
+    padding: 8px 14px;
+    background-color: transparent;
+}
+
+.filled button,
+.icon button {
+    background-color: #333333;
+    color: white;
+}
+
+.icon button img {
+    width: 12px;
+    margin-right: 3px;
+}
+
+button :hover {
+    background-color: #016500;
+    cursor: pointer;
+    border: 1px solid #016500;
+}
