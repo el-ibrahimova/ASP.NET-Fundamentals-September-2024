@@ -118,3 +118,25 @@ cursor: pointer;
     right: 7px;
     top:16px;
 }
+
+.trainings {
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 50px auto;
+}
+
+.training header{
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.training:nth-child(1) header, .training:nth-child(3) header{
+    background: #44A9F8;
+    color:white;
+}
+
+.training:nth-child(2) header{
+    background: #ff9100;
+    color:white;
+}
