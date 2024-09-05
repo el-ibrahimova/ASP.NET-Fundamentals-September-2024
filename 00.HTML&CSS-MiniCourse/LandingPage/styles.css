@@ -59,3 +59,14 @@ cursor: pointer;
 .login-btn{
     margin-left: 10px;
 }
+
+.intro{
+    background: #ff9100;
+    color: white;
+    text-align: center;
+    padding: 60px 120px 90px 120px;
+}
+
+.intro h1{
+    font-size: 50px;
+}
