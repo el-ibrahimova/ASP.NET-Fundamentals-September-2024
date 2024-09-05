@@ -70,3 +70,51 @@ cursor: pointer;
 .intro h1{
     font-size: 50px;
 }
+
+.filters{
+    background: #F8F8F8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.filters-title{
+    font-size: 25px;
+}
+
+.filters label{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.filters label input{
+    border: 1px solid #ff9100;
+    border-radius: 4px;
+    padding: 12px;
+    background-color: transparent;
+    margin-left: 10px;
+  }
+
+.filters label{
+    position: relative;
+}
+
+.question-mark-icon{
+    position: absolute;
+    top: 12px;
+    right: -25px;;
+}
+
+.filters label::after{
+    content: "";
+    display: block;
+    background: url(./images/input-arrow.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+    position:absolute ;
+    right: 7px;
+    top:16px;
+}
