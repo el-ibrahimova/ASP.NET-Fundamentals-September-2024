@@ -1,49 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-body, ul{
+body,
+ul {
     margin: 0;
     padding: 0;
     font-family: "Lato", sans-serif;
 }
 
-header{
+header {
     box-shadow: 0px 3px 8px -4px #ccc;
     padding: 20px 40px;
     display: flex;
     align-items: center;
-    justify-content:space-between ;
+    justify-content: space-between;
 }
 
-header nav ul{
-display: flex;
-list-style: none;
-align-items: center;
+header nav ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
 }
 
-.logo-container img{
-display: inline-block;
-vertical-align: middle;
-margin: 0 7px;
+.logo-container img {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 7px;
 }
 
-.login-nav-item *{
-display: inline-block;
-vertical-align: middle;
+.login-nav-item * {
+    display: inline-block;
+    vertical-align: middle;
 }
 
-.nav-item{
-    margin:  0 10px;
+.nav-item {
+    margin: 0 10px;
 }
 
-.nav-link{
+.nav-link {
     text-decoration: none;
     text-transform: uppercase;
     color: #565656;
 }
 
-.nav-link:hover{
-color: #FF9100;
-cursor: pointer;
+.nav-link:hover {
+    color: #FF9100;
+    cursor: pointer;
 }
 
 .btn {
@@ -56,22 +57,22 @@ cursor: pointer;
     box-shadow: 0px 3px 8px -4px #ccc;
 }
 
-.login-btn{
+.login-btn {
     margin-left: 10px;
 }
 
-.intro{
+.intro {
     background: #ff9100;
     color: white;
     text-align: center;
     padding: 60px 120px 90px 120px;
 }
 
-.intro h1{
+.intro h1 {
     font-size: 50px;
 }
 
-.filters{
+.filters {
     background: #F8F8F8;
     display: flex;
     justify-content: space-between;
@@ -79,34 +80,35 @@ cursor: pointer;
     padding: 20px 40px;
 }
 
-.filters-title{
+.filters-title {
     font-size: 25px;
 }
 
-.filters label{
+.filters label {
     display: inline-block;
     vertical-align: middle;
 }
 
-.filters label input{
+.filters label input {
     border: 1px solid #ff9100;
     border-radius: 4px;
     padding: 12px;
     background-color: transparent;
     margin-left: 10px;
-  }
+}
 
-.filters label{
+.filters label {
     position: relative;
 }
 
-.question-mark-icon{
+.question-mark-icon {
     position: absolute;
     top: 12px;
-    right: -25px;;
+    right: -25px;
+    ;
 }
 
-.filters label::after{
+.filters label::after {
     content: "";
     display: block;
     background: url(./images/input-arrow.png);
@@ -114,29 +116,86 @@ cursor: pointer;
     background-position: center;
     width: 20px;
     height: 20px;
-    position:absolute ;
+    position: absolute;
     right: 7px;
-    top:16px;
+    top: 16px;
 }
 
 .trainings {
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 50px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
 }
 
-.training header{
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+.training {
+    margin: 20px;
+    box-shadow: 0px 2px 4px 0px #00000024;
+border-radius: 12px;
 }
 
-.training:nth-child(1) header, .training:nth-child(3) header{
+.training:nth-child(1) header,
+.training:nth-child(3) header {
     background: #44A9F8;
-    color:white;
+    color: white;
 }
 
-.training:nth-child(2) header{
+.training:nth-child(2) header {
     background: #ff9100;
-    color:white;
+    color: white;
+}
+
+.training header {
+    position: relative; 
+}
+
+.training header h3{
+    text-align: center;
+    padding: 60px 30px;   
+    font-size: 21px;
+}
+
+.training header span {
+    background: #676781;
+    border-radius: 6px;
+    text-transform: uppercase;
+    color: white;
+    padding: 8px 12px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+}
+
+.training:nth-child(3) header span{
+    background-color: #9A5DC6;
+}
+
+.training-content{
+    padding: 20px;
+}
+
+.training-content{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.training-content-info{
+   
+   display: flex;
+   align-items: center;
+   margin: 0 8px;
+}
+
+.training-content::after{
+    content: "";
+    display: block;
+    width: 100%;
+    margin: 10px auto;
+    height: 1px;
+    background: grey;
+
 }
