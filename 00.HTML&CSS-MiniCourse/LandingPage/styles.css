@@ -196,6 +196,56 @@ border-radius: 12px;
     width: 100%;
     margin: 10px auto;
     height: 1px;
-    background: grey;
+    background: rgb(219, 214, 214)
+}
 
+.training footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.training-price{
+    font-size: 24px;
+    color: #FC4C50;
+}
+
+.training-cta.btn{
+    font-weight: bold;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.dots-line-container{
+   padding:0 40px;
+}
+
+.program{
+    border-radius: 12px;
+}
+
+.programs-content {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.program.software {
+    border: 3px solid #44A9F8;
+    background: #E3F3FD;
+}
+
+.program.hardware {
+    border: 3px solid #00AF9B;
+    background: #DFF4F1;
+}
+
+.program-header{
+display: flex;
+align-items: center;
+}
+
+.program.software h4{
+    color: #44A9F8;
 }
