@@ -299,8 +299,17 @@ padding: 0 20px 20px 20px;
     background-color: #565656;
     color: white;
     position: relative;
-    padding-left: 120px;
+    padding-left: 10%;
+    padding-right: 60px;
     margin-top: 260px;
+    border-top: 8px solid #919191;
+    display: flex;
+    align-items: top;
+    justify-content: space-between;
+}
+
+.page-footer ul{
+   list-style-type: none; 
 }
 
 .page-footer a{
@@ -311,9 +320,21 @@ padding: 0 20px 20px 20px;
 .footer-person-container img{
 position: absolute;
 bottom: 0;
+left:40px;
 }
 
-.footer-menu{
-    display: inline-block;
-    vertical-align: middle;
+.page-footer h5 {
+  font-size: 24px;
+}
+
+.footer-menu li{
+margin: 15px 0px ;
+}
+
+.social-media ul{
+    display: flex;
+}
+
+.social-media ul li{
+    margin: 0 10px;
 }
