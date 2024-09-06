@@ -301,6 +301,8 @@ padding: 0 20px 20px 20px;
     position: relative;
     padding-left: 10%;
     padding-right: 60px;
+    padding-bottom: 20px;
+    padding-top: 20px;
     margin-top: 260px;
     border-top: 8px solid #919191;
     display: flex;
@@ -321,10 +323,12 @@ padding: 0 20px 20px 20px;
 position: absolute;
 bottom: 0;
 left:40px;
+min-height: 300px;
 }
 
 .page-footer h5 {
   font-size: 24px;
+  margin: 10px 0;
 }
 
 .footer-menu li{
