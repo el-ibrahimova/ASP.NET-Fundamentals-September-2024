@@ -7,12 +7,19 @@ ul {
     font-family: "Lato", sans-serif;
 }
 
-header {
-    box-shadow: 0px 3px 8px -4px #ccc;
+body *{
+    font-family: "Lato", sans-serif;
+}
+
+header {    
     padding: 20px 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.page-header{
+   box-shadow: 0px 3px 8px -4px #ccc; 
 }
 
 header nav ul {
@@ -55,6 +62,7 @@ header nav ul {
     border: none;
     text-transform: uppercase;
     box-shadow: 0px 3px 8px -4px #ccc;
+    font-weight: bold;
 }
 
 .login-btn {
@@ -223,17 +231,32 @@ border-radius: 12px;
 
 .program{
     border-radius: 12px;
+    margin: 12px;
 }
 
 .programs-content {
     display: flex;
     align-items: center;
-    text-align: center;
+    padding: 0 50px;
+}
+
+.programs{
+   margin: 40px auto; 
 }
 
 .program.software {
     border: 3px solid #44A9F8;
     background: #E3F3FD;
+}
+
+.program.software .program-header h4{
+    color: #44A9F8;
+    margin-left: 10px;   
+}
+
+.program.hardware .program-header h4{
+    color: #00AF9B;
+    margin-left: 10px;
 }
 
 .program.hardware {
@@ -242,10 +265,55 @@ border-radius: 12px;
 }
 
 .program-header{
-display: flex;
+display: flex !important;
 align-items: center;
+justify-content: center;
 }
 
-.program.software h4{
-    color: #44A9F8;
+.program-header h3 {
+    padding: 0px 30px;
+    font-size: 21px;
+}
+
+.program-header h4{
+   font-size: 30px;
+   margin: 0;
+}
+
+.programs header{
+    display: block;
+    text-align: center;
+}
+
+.programs header h2{
+    color:#41BEAD;
+    font-size:28px;
+}
+
+.program-content{
+text-align: center;
+padding: 0 20px 20px 20px;
+}
+
+.page-footer{
+    background-color: #565656;
+    color: white;
+    position: relative;
+    padding-left: 120px;
+    margin-top: 260px;
+}
+
+.page-footer a{
+    text-decoration: none;
+    color: white;
+}
+
+.footer-person-container img{
+position: absolute;
+bottom: 0;
+}
+
+.footer-menu{
+    display: inline-block;
+    vertical-align: middle;
 }
