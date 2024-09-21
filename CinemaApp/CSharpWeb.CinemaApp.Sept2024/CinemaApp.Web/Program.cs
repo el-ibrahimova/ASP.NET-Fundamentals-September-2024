@@ -20,9 +20,9 @@ namespace CinemaApp.Web
             }
 
             app.UseHttpsRedirection(); // enable HTTPS for the application
-            app.UseStaticFiles(); // load files from directory wwwroot - img, css, js
+            app.UseStaticFiles(); // load files from directory wwwroot - img, css, js, ico
 
-            app.UseRouting();
+            app.UseRouting(); // enable default routing
 
             app.UseAuthorization();
 
