@@ -51,7 +51,7 @@ namespace CinemaApp.Data.Configuration
                     ReleaseDate = new DateTime(2001, 05,01),
                     Director = "Peter Jackson",
                     Duration = 178,
-                    Description = "The plot of The Lord of the Rings is about the war of the peoples of the fantasy world Middle-earth against a dark lord known as \"Sauron.\" At the same time they try to destroy a ring which would give Sauron a lot of power if he got it, but the only place to destroy the ring is deep into Sauron's land Mordor."
+                    Description = "The plot of The Lord of the Rings is about the war of the peoples of the fantasy world Middle-earth against a dark lord known as Sauron."
                 }
 
             };

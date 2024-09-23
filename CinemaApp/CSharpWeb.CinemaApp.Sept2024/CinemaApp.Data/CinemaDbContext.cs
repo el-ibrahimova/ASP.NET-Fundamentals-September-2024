@@ -14,7 +14,7 @@ namespace CinemaApp.Data
         public CinemaDbContext(DbContextOptions options)
         : base(options)
         {
-
+            
         }
 
         public virtual DbSet<Movie> Movies { get; set; } = null!;
@@ -24,6 +24,5 @@ namespace CinemaApp.Data
             // apply all configuration from entity configuration using reflection
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
     }
 }
