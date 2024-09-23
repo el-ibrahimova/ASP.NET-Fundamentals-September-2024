@@ -14,18 +14,15 @@ namespace CinemaApp.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
+            // Two ways of transmitting data from Controller to View
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            // 1. Using ViewData/ViewBag
+            // 2. Pass ViewModel to the View
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewData["Title"] = "Home Page"; // this is dictionary
+            ViewData["Message"] = "Welcome to the Cinema Web App!"; // this is dictionary
+
+            return View();
         }
     }
 }
