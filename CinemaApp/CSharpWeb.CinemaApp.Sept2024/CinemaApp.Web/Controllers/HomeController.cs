@@ -1,18 +1,15 @@
 namespace CinemaApp.Web.Controllers
 {
-    using System.Diagnostics;
+    using System.Diagnostics; // System namespaces
 
-    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc; // Third-party namespaces
 
-    using ViewModels;
-  
+    using ViewModels; // Internal project namespaces
+
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
         }
 
         public IActionResult Index()
