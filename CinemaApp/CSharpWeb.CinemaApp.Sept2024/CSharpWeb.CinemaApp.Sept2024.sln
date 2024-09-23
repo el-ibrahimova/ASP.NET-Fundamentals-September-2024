@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Web.ViewModels", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.Common", "CinemaApp.Common\CinemaApp.Common.csproj", "{8FFD7921-951D-4C23-BA37-9A779331C02A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.Data.Models", "CinemaApp.Data.Models\CinemaApp.Data.Models.csproj", "{A55993F0-5BA0-40FF-B5F9-3DE807268427}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{4E3451D6-6493-4E1E-B8C0-BAB46D7DB72A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{DED1AE48-1359-4C9F-B741-9F9BAB7D08A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.Data", "CinemaApp.Data\CinemaApp.Data.csproj", "{F2F94E49-682D-4BBB-BD12-888CB7D54F99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +35,23 @@ Global
 		{8FFD7921-951D-4C23-BA37-9A779331C02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FFD7921-951D-4C23-BA37-9A779331C02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FFD7921-951D-4C23-BA37-9A779331C02A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A55993F0-5BA0-40FF-B5F9-3DE807268427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55993F0-5BA0-40FF-B5F9-3DE807268427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55993F0-5BA0-40FF-B5F9-3DE807268427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55993F0-5BA0-40FF-B5F9-3DE807268427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2F94E49-682D-4BBB-BD12-888CB7D54F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F94E49-682D-4BBB-BD12-888CB7D54F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F94E49-682D-4BBB-BD12-888CB7D54F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F94E49-682D-4BBB-BD12-888CB7D54F99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8BFD8029-A911-4E2B-9008-3662752EAFE7} = {4E3451D6-6493-4E1E-B8C0-BAB46D7DB72A}
+		{B5FF7F59-68A3-4722-825F-08299104C3CC} = {4E3451D6-6493-4E1E-B8C0-BAB46D7DB72A}
+		{A55993F0-5BA0-40FF-B5F9-3DE807268427} = {DED1AE48-1359-4C9F-B741-9F9BAB7D08A2}
+		{F2F94E49-682D-4BBB-BD12-888CB7D54F99} = {DED1AE48-1359-4C9F-B741-9F9BAB7D08A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCFE0240-CD16-4C86-891D-0AB1A422DDA3}
