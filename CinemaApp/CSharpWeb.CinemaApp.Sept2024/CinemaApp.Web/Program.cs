@@ -22,9 +22,9 @@ namespace CinemaApp.Web
             app.UseHttpsRedirection(); // enable HTTPS for the application
             app.UseStaticFiles(); // load files from directory wwwroot - img, css, js, ico
 
-            app.UseRouting(); // enable default routing
+            app.UseRouting(); // enable default routing - Url
 
-            app.UseAuthorization();
+            app.UseAuthorization(); // use it if we have accounts
 
             app.MapControllerRoute(
                 name: "default",
