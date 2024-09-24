@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using ShoppingListApp.Web.Models.Product;
 using System.Text.Json;
+using Microsoft.Net.Http.Headers;
 
 namespace ShoppingListApp.Web.Controllers
 {
-    public class ProductController:Controller
+    public class ProductController : Controller
     {
         private IEnumerable<ProductViewModel> _products
             = new List<ProductViewModel>()
@@ -29,8 +31,17 @@ namespace ShoppingListApp.Web.Controllers
                 },
             };
 
-        public IActionResult All()
+        [ActionName("My-Products")]
+        public IActionResult All(string keyword)
         {
+            if (keyword != null)
+            {
+                var foundProducts = _products
+                    .Where(p => p.Name.ToLower().Contains(keyword.ToLower()));
+
+                return View(foundProducts);
+            }
+
             return View(_products);
         }
 
@@ -39,14 +50,14 @@ namespace ShoppingListApp.Web.Controllers
             var product = _products
                 .FirstOrDefault(p => p.Id == id);
 
-            if(product == null)
+            if (product == null)
             {
                 return BadRequest();
             }
 
             return View(_products);
         }
-        
+
         public IActionResult AllAsJson()
         {
             var options = new JsonSerializerOptions()
@@ -67,6 +78,19 @@ namespace ShoppingListApp.Web.Controllers
             }
 
             return Content(text);
+        }
+
+        public IActionResult AllAsTextFile()
+        {
+            StringBuilder sb = new();
+            foreach (var product in _products)
+            {
+                sb.AppendLine($"Product: {product.Id}: {product.Name} - {product.Price:f2} lv.");
+            }
+
+            Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment: filename= products.txt");
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString().TrimEnd()), "text/plain");
         }
     }
 }
