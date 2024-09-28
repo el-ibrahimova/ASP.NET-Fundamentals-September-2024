@@ -13,8 +13,16 @@
             public const int DescriptionMaxLength = 500;
             public const int DurationMinValue = 2;
             public const int DurationMaxValue = 999;
-
             public const string ReleaseDateFormat = "MM/yyyy";
+        }
+
+
+        public static class Cinema
+        {
+            public const int NameMinLength  = 3;
+            public const int NameMaxLength = 50;
+            public const int LocationMinLength = 3;
+            public const int LocationMaxLength = 85;
         }
     }
 }
