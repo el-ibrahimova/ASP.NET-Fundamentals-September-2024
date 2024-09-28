@@ -12,11 +12,13 @@ namespace CinemaApp.Data.Configuration
 
             builder.HasOne(cm => cm.Movie)
                 .WithMany(m => m.MovieCinemas)
-                .HasForeignKey(cm => cm.MovieId);
+                .HasForeignKey(cm => cm.MovieId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(cm => cm.Cinema)
                 .WithMany(cm => cm.MovieCinemas)
-                .HasForeignKey(cm => cm.CinemaId);
+                .HasForeignKey(cm => cm.CinemaId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

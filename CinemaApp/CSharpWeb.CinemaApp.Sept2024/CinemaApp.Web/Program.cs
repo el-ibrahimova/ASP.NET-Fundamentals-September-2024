@@ -1,4 +1,5 @@
 using CinemaApp.Data;
+using CinemaApp.Web.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Web
@@ -19,6 +20,7 @@ namespace CinemaApp.Web
 
             builder.Services.AddControllersWithViews();
 
+          
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -40,6 +42,8 @@ namespace CinemaApp.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+            app.ApplyMigrations();
             app.Run();
         }
     }
