@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CinemaApp.Data.Configuration
 {
-    public class CinemaMovieConfiguration:IEntityTypeConfiguration<CinemaMovie>
+    public class CinemaMovieConfiguration : IEntityTypeConfiguration<CinemaMovie>
     {
         public void Configure(EntityTypeBuilder<CinemaMovie> builder)
         {
@@ -20,5 +20,6 @@ namespace CinemaApp.Data.Configuration
                 .HasForeignKey(cm => cm.CinemaId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
+
     }
 }
