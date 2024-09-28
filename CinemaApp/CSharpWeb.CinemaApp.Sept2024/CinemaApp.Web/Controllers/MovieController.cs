@@ -1,11 +1,13 @@
-﻿using System.Globalization;
-using CinemaApp.Data;
-using CinemaApp.Data.Models;
-using CinemaApp.Web.ViewModels.Movie;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CinemaApp.Web.Controllers
+﻿namespace CinemaApp.Web.Controllers
 {
+    using System.Globalization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using Data;
+    using Data.Models;
+    using Web.ViewModels.Movie;
+    using static Common.EntityValidationConstants.Movie;
+
     public class MovieController : Controller
     {
         private readonly CinemaDbContext dbContext;
@@ -35,14 +37,15 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public IActionResult Create(AddMovieInputModel inputModel)
         {
-           
 
-            bool isReleaseDateValid = DateTime.TryParseExact(inputModel.ReleaseDate, "dd/MM/yyyy",
+
+            bool isReleaseDateValid = DateTime.TryParseExact(inputModel.ReleaseDate, ReleaseDateFormat,
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime releaseDate);
 
             if (!isReleaseDateValid)
             {
-                this.ModelState.AddModelError(nameof(inputModel.ReleaseDate), "The Release Date must be in the following format : dd/MM/yyyy");
+                // ModelState becomes invalid => IsValid==false
+                this.ModelState.AddModelError(nameof(inputModel.ReleaseDate),string.Format("The Release Date must be in the following format : {0}", ReleaseDateFormat));
                 return this.View(inputModel);
             }
 
@@ -70,7 +73,7 @@ namespace CinemaApp.Web.Controllers
 
         [HttpGet]
         public IActionResult Details(string id)
-        { 
+        {
             // check if id is valid Guid
             bool isIdValid = Guid.TryParse(id, out Guid guidId);
 

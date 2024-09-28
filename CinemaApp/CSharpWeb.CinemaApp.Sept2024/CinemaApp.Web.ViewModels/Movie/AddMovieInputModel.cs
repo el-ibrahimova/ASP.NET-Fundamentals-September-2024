@@ -2,27 +2,34 @@
 {
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.Movie;
+    using static Common.EntityValidationMessages.Movie;
     public class AddMovieInputModel
     {
-        [Required]
+        public AddMovieInputModel()
+        {
+            // in this way we set default value for ReleaseDate
+            this.ReleaseDate = DateTime.UtcNow.ToString(ReleaseDateFormat);
+        }
+
+        [Required(ErrorMessage = TitleRequiredMessage) ]
         [MaxLength(TitleMaxLength)]
         public string Title { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = GenreRequiredMessage)]
         [MinLength(GenreMinLength)]
         [MaxLength(GenreMaxLength)]
         public string Genre { get; set; } = null!;
 
-        [Required]
-        public string ReleaseDate { get; set; } = null!;
+        [Required(ErrorMessage = ReleaseDateMessage)]
+        public string ReleaseDate { get; set; }
 
         [Range(DurationMinValue, DurationMaxValue)]
+        [Required(ErrorMessage = DurationRequiredMessage)]
         public int Duration { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = DirectorRequiredMessage)]
         [MinLength(DirectorNameMinLength)]
         [MaxLength(DirectorNameMaxLength)]
-
         public string Director { get; set; } = null!;
 
         [Required]
