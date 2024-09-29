@@ -118,7 +118,7 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
-            AddMovieToCinemaInputModel viewModel = new()
+            AddMovieToCinemaInputModel viewModel = new AddMovieToCinemaInputModel()
             {
                 Id = id!,
                 MovieTitle = movie.Title,
