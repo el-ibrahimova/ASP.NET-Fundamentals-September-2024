@@ -40,24 +40,24 @@ namespace CinemaApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cinemas", (string)null);
+                    b.ToTable("Cinemas");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("36e3334f-124a-4ef9-8c27-98f5eca974a3"),
+                            Id = new Guid("d45ab027-51c6-46a3-81d7-023ae1e8b8f3"),
                             Location = "Sofia",
                             Name = "Cinema city"
                         },
                         new
                         {
-                            Id = new Guid("ea07dd92-f940-4c32-9f87-2ed955ba81ba"),
+                            Id = new Guid("53368f06-46d6-4e8c-87b0-7225c276d1b6"),
                             Location = "Plovdiv",
                             Name = "Cinema city"
                         },
                         new
                         {
-                            Id = new Guid("8b40319c-dd70-4f31-85d7-c778bdabb13f"),
+                            Id = new Guid("252930dd-ff25-4bed-9adf-c453756cd62f"),
                             Location = "Varna",
                             Name = "Cinemax"
                         });
@@ -71,11 +71,16 @@ namespace CinemaApp.Data.Migrations
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.HasKey("CinemaId", "MovieId");
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("CinemaMovies", (string)null);
+                    b.ToTable("CinemaMovies");
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.Movie", b =>
@@ -112,12 +117,12 @@ namespace CinemaApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0c43616c-5614-4750-9fae-f034af886f5d"),
+                            Id = new Guid("9609ffef-a97d-43f6-99b6-11d319ab134a"),
                             Description = "It follows Harry Potter, a wizard in his fourth year at Hogwarts School of Witchcraft and Wizardry, and the mystery surrounding the entry of Harry's name into the Triwizard Tournament, in which he is forced to compete.",
                             Director = "Mike Newel",
                             Duration = 157,
@@ -127,7 +132,7 @@ namespace CinemaApp.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("432e2cbf-4b49-4642-a8b2-3299fdc6190f"),
+                            Id = new Guid("8732ff1a-58e3-4c86-b1ce-a5b91caeb35e"),
                             Description = "The plot of The Lord of the Rings is about the war of the peoples of the fantasy world Middle-earth against a dark lord known as Sauron.",
                             Director = "Peter Jackson",
                             Duration = 178,

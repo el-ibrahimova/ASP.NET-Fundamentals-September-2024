@@ -12,7 +12,7 @@ namespace CinemaApp.Web.Controllers
         {
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // Two ways of transmitting data from Controller to View
 
