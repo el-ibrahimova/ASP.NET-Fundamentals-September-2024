@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static ForumApp.Infrastructure.Constants.ValidationConstants;
 
-
-
 namespace ForumApp.Core.Models
 {
     public class PostModel
