@@ -1,4 +1,5 @@
-﻿using ForumApp.Core.Contracts;
+﻿using System.Runtime.Serialization;
+using ForumApp.Core.Contracts;
 using ForumApp.Core.Models;
 using ForumApp.Infrastructure.Data;
 using ForumApp.Infrastructure.Data.Models;
@@ -53,6 +54,35 @@ namespace ForumApp.Core.Services
                 throw new ApplicationException("Operation failed. Please, try again.");
             }
 
+        }
+
+        public async Task<PostModel?> getByIdAsync(int id)
+        {
+            return await context.Posts
+                .Where(p => p.Id == id)
+                .Select(p => new PostModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Content = p.Content
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task EditAsync(PostModel model)
+        {
+            var entity = await context.FindAsync<Post>(model.Id);
+
+            if (entity == null)
+            {
+                throw new ApplicationException("Invalid Post");
+            }
+
+            entity.Title = model.Title;
+            entity.Content = model.Content;
+
+            await context.SaveChangesAsync();
         }
     }
 }
