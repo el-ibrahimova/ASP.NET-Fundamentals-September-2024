@@ -84,5 +84,18 @@ namespace ForumApp.Core.Services
 
             await context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await context.FindAsync<Post>(id);
+
+            if (entity == null)
+            {
+                throw new ApplicationException("Invalid Post");
+            }
+
+            context.Remove(entity);
+            await context.SaveChangesAsync();
+        }
     }
 }

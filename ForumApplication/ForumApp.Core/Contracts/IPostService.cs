@@ -8,5 +8,6 @@ namespace ForumApp.Core.Contracts
         Task AddAsync(PostModel model);
         Task<PostModel?> getByIdAsync(int id);
         Task EditAsync(PostModel model);
+        Task DeleteAsync(int id);
     }
 }
