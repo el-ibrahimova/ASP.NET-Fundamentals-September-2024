@@ -91,7 +91,7 @@ namespace TaskBoard.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(
                     Input.Email,
                     Input.Password,
-                    isPersistent:true,
+                    true,
                     lockoutOnFailure: false);
 
                 if (result.Succeeded)
