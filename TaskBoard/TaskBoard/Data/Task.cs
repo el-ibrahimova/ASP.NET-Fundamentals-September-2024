@@ -6,6 +6,7 @@ using static TaskBoard.Data.DataConstants;
 
 namespace TaskBoard.Data
 {
+    [Comment("Board Tasks")]
     public class Task
     {
         [Key]
