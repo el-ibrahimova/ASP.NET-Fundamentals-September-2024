@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskBoard.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -61,7 +63,6 @@ namespace TaskBoard.Areas.Identity.Pages.Account
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -90,7 +91,7 @@ namespace TaskBoard.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(
                     Input.Email,
                     Input.Password,
-                    true,
+                    isPersistent:true,
                     lockoutOnFailure: false);
 
                 if (result.Succeeded)
