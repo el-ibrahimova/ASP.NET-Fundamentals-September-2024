@@ -94,6 +94,7 @@ namespace TaskBoard.Controllers
 
             var model = new TaskFormViewModel()
             {
+                Title=task.Title,
                 BoardId = task.BoardId,
                 Description = task.Description,
                 Id = task.Id,
@@ -105,9 +106,44 @@ namespace TaskBoard.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Edit(TaskFormViewModel model, int id)
-        { 
-        
+        {
+            var task = await data.Tasks.FindAsync(id);
+
+            if (task ==null)
+            {
+                return BadRequest();
+            }
+
+            if (task.OwnerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            if (!(await GetBoards()).Any(b => b.Id == model.BoardId))
+            {
+                ModelState.AddModelError(nameof(model.BoardId), "Board does not exist");
+            }
+
+            if (!ModelState.IsValid)
+            { 
+            model.Boards = await GetBoards();
+                return View(model);
+            }
+
+            task.Title = model.Title;
+            task.Description = model.Description;
+            task.BoardId = model.BoardId;
+
+            await data.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Board");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete()
+        { 
+        }
+
 
 
         private string GetUserId()
