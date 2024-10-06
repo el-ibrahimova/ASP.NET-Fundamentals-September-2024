@@ -22,8 +22,6 @@ namespace TaskBoard.Models
 
         public string Description { get; set; } = null!;
 
-        public DateTime? CreatedOn { get; set; }
-
         public int? BoardId { get; set; }
 
         [Required] public string Owner { get; set; } = null!;

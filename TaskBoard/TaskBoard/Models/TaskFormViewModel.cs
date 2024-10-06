@@ -21,6 +21,5 @@ namespace TaskBoard.Models
         public int? BoardId { get; set; }
 
         public IEnumerable<TaskBoardModel> Boards { get; set; } = new List<TaskBoardModel>();
-
     }
 }

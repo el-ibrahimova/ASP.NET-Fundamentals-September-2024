@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using TaskBoard.Data;
 using TaskBoard.Models;
@@ -51,10 +52,63 @@ namespace TaskBoard.Controllers
             };
 
             await data.AddAsync(entity);
-           await data.SaveChangesAsync();
+            await data.SaveChangesAsync();
 
             return RedirectToAction("Index", "Board");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var task = await data.Tasks
+                .Where(t => t.Id == id)
+                .Select(t => new TaskDetailsViewModel()
+                {
+                    Board = t.Board.Name,
+                    Description = t.Description,
+                    CreatedOn = t.CreatedOn != null && t.CreatedOn.HasValue
+                 ? t.CreatedOn.Value.ToString("dd.MM.yyyy HH:mm")
+                 : "",
+                    Owner = t.Owner.UserName,
+                    Title = t.Title
+                })
+                .FirstOrDefaultAsync();
+
+            return View(task);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var task = await data.Tasks.FindAsync(id);
+
+            if (task == null)
+            {
+                return BadRequest();
+            }
+
+            if (task.OwnerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            var model = new TaskFormViewModel()
+            {
+                BoardId = task.BoardId,
+                Description = task.Description,
+                Id = task.Id,
+                Boards = await GetBoards()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(TaskFormViewModel model, int id)
+        { 
+        
+        }
+
 
         private string GetUserId()
         {
@@ -62,7 +116,7 @@ namespace TaskBoard.Controllers
         }
 
 
-        private async Task< IEnumerable<TaskBoardModel>> GetBoards()
+        private async Task<IEnumerable<TaskBoardModel>> GetBoards()
         {
             return await data.Boards
                  .Select(x => new TaskBoardModel
