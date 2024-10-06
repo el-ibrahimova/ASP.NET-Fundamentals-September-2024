@@ -25,6 +25,13 @@ namespace TaskBoard
                     options.Password.RequireLowercase = false;
                 })
                 .AddEntityFrameworkStores<TaskBoardAppDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+            });
+
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
