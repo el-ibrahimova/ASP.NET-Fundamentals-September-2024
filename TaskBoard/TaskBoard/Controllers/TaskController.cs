@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using TaskBoard.Data;
 using TaskBoard.Models;
+using Task = TaskBoard.Data.Task;
 
 namespace TaskBoard.Controllers
 {
@@ -140,8 +141,49 @@ namespace TaskBoard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete()
-        { 
+        public async Task<IActionResult> Delete(int id)
+        {
+            var task = await data.Tasks.FindAsync(id);
+
+            if (task == null)
+            {
+                return BadRequest();
+            }
+
+            if (task.OwnerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            var model = new TaskViewModel()
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(TaskViewModel model)
+        {
+            var task = await data.Tasks.FindAsync(model.Id);
+
+            if (task == null)
+            {
+                return BadRequest();
+            }
+
+            if (task.OwnerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            data.Tasks.Remove(task);
+            await data.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Board");
         }
 
 
