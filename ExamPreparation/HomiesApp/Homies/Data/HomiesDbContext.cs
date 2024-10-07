@@ -17,7 +17,7 @@ namespace Homies.Data
 
             modelBuilder.Entity<EventParticipant>()
                 .HasOne(e => e.Event)
-                .WithMany(e => e.EventsParticipants)
+                .WithMany(e => EventsParticipants)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder
