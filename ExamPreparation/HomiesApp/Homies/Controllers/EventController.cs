@@ -58,13 +58,31 @@ namespace Homies.Controllers
                     HelperId = userId
                 });
 
-              await data.SaveChangesAsync();  
-             
+                await data.SaveChangesAsync();
+
             }
-              return RedirectToAction("Joined");
-            
+            return RedirectToAction("Joined");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Joined()
+        {
+            string userId = GetUserId();
+
+            var model = await data.EventsParticipants
+                .Where(ep => ep.HelperId == userId)
+                .AsNoTracking()
+                .Select(ep => new EventInfoViewModel(
+                    ep.EventId,
+                    ep.Event.Name,
+                    ep.Event.Start,
+                    ep.Event.Type.Name,
+                    ep.Event.Organiser.UserName
+                    ))
+                .ToListAsync();
+
+            return View(model);
+        }
 
         private string GetUserId()
         {

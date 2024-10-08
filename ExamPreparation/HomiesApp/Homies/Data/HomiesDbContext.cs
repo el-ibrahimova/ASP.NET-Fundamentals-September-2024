@@ -17,27 +17,27 @@ namespace Homies.Data
 
             modelBuilder.Entity<EventParticipant>()
                 .HasOne(e => e.Event)
-                .WithMany(e => EventsParticipants)
+                .WithMany(e =>e.EventsParticipants)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder
-                .Entity<Homies.Data.Models.Type>()
-                .HasData(new Homies.Data.Models.Type()
+                .Entity<Models.Type>()
+                .HasData(new Models.Type()
                 {
                     Id = 1,
                     Name = "Animals"
                 },
-                new Homies.Data.Models.Type()
+                new Models.Type()
                 {
                     Id = 2,
                     Name = "Fun"
                 },
-                new Homies.Data.Models.Type()
+                new Models.Type()
                 {
                     Id = 3,
                     Name = "Discussion"
                 },
-                new Homies.Data.Models.Type()
+                new Models.Type()
                 {
                     Id = 4,
                     Name = "Work"
@@ -47,7 +47,7 @@ namespace Homies.Data
         }
 
         public DbSet<Event> Events { get; set; }
-        public DbSet<Homies.Data.Models.Type> Types { get; set; }
+        public DbSet<Models.Type> Types { get; set; }
 
         public DbSet<EventParticipant> EventsParticipants { get; set; } 
 
