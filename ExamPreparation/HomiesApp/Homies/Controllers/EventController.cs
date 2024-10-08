@@ -61,7 +61,7 @@ namespace Homies.Controllers
                 await data.SaveChangesAsync();
 
             }
-            return RedirectToAction("Joined");
+            return RedirectToAction(nameof(Joined));
         }
 
         [HttpGet]
@@ -83,6 +83,35 @@ namespace Homies.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> Leave(int id)
+        {
+            var e = await data.Events
+                .Where(e => e.Id == id)
+                .Include(e => e.EventsParticipants)
+                .FirstOrDefaultAsync();
+
+            if (e == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = GetUserId();
+
+            var ep = e.EventsParticipants
+                .FirstOrDefault(ep => ep.HelperId == userId);
+
+            if (ep == null)
+            {
+                return BadRequest();
+            }
+
+            e.EventsParticipants.Remove(ep);
+            await data.SaveChangesAsync();
+
+            return RedirectToAction(nameof(All));
+        }
+
 
         private string GetUserId()
         {
