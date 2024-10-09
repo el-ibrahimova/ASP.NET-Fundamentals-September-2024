@@ -112,10 +112,40 @@ namespace Homies.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            var model = new EventFormViewModel();
+
+            model.Types = await GetTypes();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(EventFormViewModel model)
+        {
+            // TODO: check for correct data
+        }
 
         private string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? String.Empty;
+        }
+
+        private async Task<IEnumerable<TypeViewModel>> GetTypes()
+        {
+            return await data.Types
+                .AsNoTracking()
+                .Select(t => new TypeViewModel()
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                })
+                .ToListAsync();
+
+
+
         }
     }
 }

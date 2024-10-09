@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using static Homies.Data.DataConstants;
+using Type = Homies.Data.Models.Type;
 
 namespace Homies.Models
 {
@@ -20,20 +21,16 @@ namespace Homies.Models
             ErrorMessage = StringLengthErrorMessage)]
         public string Description { get; set; } = null!;
 
-      
-        [Required]
-        public string Start { get; set; }
 
-        [Required]
-        public string End { get; set; }
+        [Required(ErrorMessage = RequireMessage)]
+        public string Start { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = RequireMessage)]
+        public string End { get; set; } = null!;
+
+        [Required(ErrorMessage = RequireMessage)]
         public int TypeId { get; set; }
 
-
-        [ForeignKey(nameof(TypeId))]
-        public Type Type { get; set; } = null!;
-
-        public IList<EventParticipant> EventsParticipants { get; set; } = new List<EventParticipant>();
+        public IEnumerable<TypeViewModel> Types { get; set; } = null!;
     }
 }
