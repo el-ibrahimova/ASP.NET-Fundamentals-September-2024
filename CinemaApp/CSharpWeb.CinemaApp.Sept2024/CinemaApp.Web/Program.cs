@@ -1,5 +1,7 @@
 using CinemaApp.Data;
+using CinemaApp.Data.Models;
 using CinemaApp.Web.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Web
@@ -20,6 +22,13 @@ namespace CinemaApp.Web
 
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDefaultIdentity<ApplicationUser>(cfg =>
+                {
+
+                })
+                .AddRoles<IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<CinemaDbContext>();
+
           
             WebApplication app = builder.Build();
 
@@ -36,11 +45,14 @@ namespace CinemaApp.Web
 
             app.UseRouting(); // enable default routing - Url
 
+            app.UseAuthentication();
             app.UseAuthorization(); // use it if we have accounts
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.MapRazorPages();
 
 
             app.ApplyMigrations();

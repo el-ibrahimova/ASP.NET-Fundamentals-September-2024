@@ -186,7 +186,7 @@ namespace CinemaApp.Web.Controllers
                     return this.View(model);
                 }
 
-                CinemaMovie cinemaMovie = await this.dbContext
+                CinemaMovie? cinemaMovie = await this.dbContext
                     .CinemaMovies
                     .FirstOrDefaultAsync(cm => cm.MovieId == movieGuid && cm.CinemaId == cinemaGuid);
 
