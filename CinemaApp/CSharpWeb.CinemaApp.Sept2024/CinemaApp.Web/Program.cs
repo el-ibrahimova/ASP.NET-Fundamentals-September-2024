@@ -2,6 +2,7 @@ using CinemaApp.Data;
 using CinemaApp.Data.Models;
 using CinemaApp.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Web
@@ -26,10 +27,13 @@ namespace CinemaApp.Web
                 {
 
                 })
-                .AddRoles<IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<CinemaDbContext>();
+                 .AddEntityFrameworkStores<CinemaDbContext>()
+                 .AddRoles<IdentityRole<Guid>>()
+                .AddSignInManager<SignInManager<ApplicationUser>>()
+                 .AddUserManager<UserManager<ApplicationUser>>()
+                .AddUserStore<ApplicationUser>();
 
-          
+
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -53,7 +57,7 @@ namespace CinemaApp.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();  // add routing to Identity Razor pages
-            
+
             app.ApplyMigrations();
             app.Run();
         }
