@@ -45,16 +45,15 @@ namespace CinemaApp.Web
 
             app.UseRouting(); // enable default routing - Url
 
-            app.UseAuthentication();
-            app.UseAuthorization(); // use it if we have accounts
+            app.UseAuthentication(); // First -> Who am I
+            app.UseAuthorization(); // Second -> What can I do
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.MapRazorPages();
-
-
+            app.MapRazorPages();  // add routing to Identity Razor pages
+            
             app.ApplyMigrations();
             app.Run();
         }
