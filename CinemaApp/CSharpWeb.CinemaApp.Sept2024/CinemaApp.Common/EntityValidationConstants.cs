@@ -14,6 +14,8 @@
             public const int DurationMinValue = 2;
             public const int DurationMaxValue = 999;
             public const string ReleaseDateFormat = "MM/yyyy";
+            public const int ImageUrlMinLength = 8;
+            public const int ImageUrlMaxLength = 2083;
         }
 
 
