@@ -10,5 +10,7 @@
         public int Duration { get; set; }
         public string Description { get; set; } = null!;
         public virtual ICollection<CinemaMovie> MovieCinemas { get; set; } = new HashSet<CinemaMovie>();
+
+        public virtual ICollection<ApplicationUserMovie> MovieApplicationUsers { get; set; } = new HashSet<ApplicationUserMovie>();
     }
 }

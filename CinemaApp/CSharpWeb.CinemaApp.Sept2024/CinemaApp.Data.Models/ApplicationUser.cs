@@ -8,5 +8,8 @@ namespace CinemaApp.Data.Models
         {
             this.Id= Guid.NewGuid();
         }
+
+        public virtual ICollection<ApplicationUserMovie> ApplicationUserMovies { get; set; } =
+            new HashSet<ApplicationUserMovie>();
     }
 }
