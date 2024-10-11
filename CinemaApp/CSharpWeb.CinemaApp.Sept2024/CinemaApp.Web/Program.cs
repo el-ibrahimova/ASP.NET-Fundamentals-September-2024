@@ -2,8 +2,6 @@ using CinemaApp.Data;
 using CinemaApp.Data.Models;
 using CinemaApp.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Web
@@ -26,20 +24,7 @@ namespace CinemaApp.Web
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(cfg =>
                 {
-                    cfg.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
-                    cfg.Password.RequireLowercase =
-                        builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
-                    cfg.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
-                    cfg.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
-                    cfg.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
-
-                    cfg.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
-                    cfg.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
-                    cfg.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
-
-                    cfg.User.RequireUniqueEmail =
-                        builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
-
+                    ConfigureIdentity(builder, cfg);
                 })
                 .AddEntityFrameworkStores<CinemaDbContext>()
                 .AddRoles<IdentityRole<Guid>>()
@@ -76,6 +61,23 @@ namespace CinemaApp.Web
 
             app.ApplyMigrations();
             app.Run();
+        }
+
+        private static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg)
+        {
+            cfg.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
+            cfg.Password.RequireLowercase =
+                builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+            cfg.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+            cfg.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
+            cfg.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
+
+            cfg.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+            cfg.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
+            cfg.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
+
+            cfg.User.RequireUniqueEmail =
+                builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
         }
     }
 }
