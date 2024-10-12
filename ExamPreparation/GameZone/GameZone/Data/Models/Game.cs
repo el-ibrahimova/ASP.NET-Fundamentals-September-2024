@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static GameZone.Common.ModelConstants;
 
 namespace GameZone.Data.Models
 {
@@ -12,12 +13,12 @@ namespace GameZone.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(GameTitleMaxLength)]
         [Comment("Game title")]
         public string Title { get; set; } = null!;
 
         [Required]
-        [MaxLength(500)]
+        [MaxLength(GameDescriptionMaxLength)]
         [Comment("Game description")]
         public string Description { get; set; } = null!;
 
@@ -25,8 +26,7 @@ namespace GameZone.Data.Models
         public string? ImageUrl { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        [Comment("Identifier of the game publisher")]
+     [Comment("Identifier of the game publisher")]
         public string PublisherId { get; set; }= null!;
 
         [ForeignKey(nameof(PublisherId))] 
