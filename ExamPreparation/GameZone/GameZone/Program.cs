@@ -16,8 +16,15 @@ namespace GameZone
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<IdentityUser>(cfg =>
+            {
+                cfg.SignIn.RequireConfirmedAccount = false;
+                cfg.Password.RequireDigit = false;
+                cfg.Password.RequireNonAlphanumeric = false;
+                cfg.Password.RequireUppercase = false;
+            })
                 .AddEntityFrameworkStores<GameZoneDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
