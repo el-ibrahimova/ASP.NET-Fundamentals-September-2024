@@ -11,7 +11,7 @@
             this.ReleaseDate = DateTime.UtcNow.ToString(ReleaseDateFormat);
         }
 
-        [Required(ErrorMessage = TitleRequiredMessage) ]
+        [Required(ErrorMessage = TitleRequiredMessage)]
         [MaxLength(TitleMaxLength)]
         public string Title { get; set; } = null!;
 
@@ -36,5 +36,9 @@
         [MinLength(DescriptionMinLength)]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
+
+       
+        [MaxLength(ImageUrlMaxLength)]
+        public string? ImageUrl { get; set; }
     }
 }
