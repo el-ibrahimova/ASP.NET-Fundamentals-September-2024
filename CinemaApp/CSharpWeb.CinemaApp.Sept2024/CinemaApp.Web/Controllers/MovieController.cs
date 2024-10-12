@@ -75,7 +75,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string? id)
         {
             Guid movieGuid = Guid.Empty;
 
@@ -125,13 +125,15 @@ namespace CinemaApp.Web.Controllers
                 MovieTitle = movie.Title,
                 Cinemas = await this.dbContext
                     .Cinemas
-                    .Include(c => c.MovieCinemas).ThenInclude(cm => cm.Movie)
+                    .Include(c => c.MovieCinemas)
+                    .ThenInclude(cm => cm.Movie)
                     .Select(c => new CinemaCheckBoxItemInputModel()
                     {
                         Id = c.Id.ToString(),
                         Name = c.Name,
                         Location = c.Location,
-                        IsSelected = c.MovieCinemas.Any(cm => cm.Movie.Id == movieGuid),
+                        IsSelected = c.MovieCinemas
+                            .Any(cm => cm.Movie.Id == movieGuid),
                     })
                     .ToArrayAsync()
             };
