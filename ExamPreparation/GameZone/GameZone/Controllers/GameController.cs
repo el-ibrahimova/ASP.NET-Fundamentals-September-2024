@@ -47,7 +47,6 @@ namespace GameZone.Controllers
 
             model.Genres = await GetGenres();
 
-
             return View(model);
         }
 
@@ -219,7 +218,7 @@ namespace GameZone.Controllers
 
             if (entity == null || entity.IsDeleted)
             {
-                throw new ArgumentException("Invalid id");
+                throw new ArgumentException("Invalid Id");
             }
 
             string currentUserId = GetCurrentUserId() ?? String.Empty;
