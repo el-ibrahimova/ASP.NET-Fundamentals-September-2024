@@ -137,10 +137,19 @@ namespace GameZone.Controllers
                 throw new ArgumentException("Invalid id");
             }
 
+
+            string currentUser = GetCurrentUserId() ?? String.Empty;
+
+            if (entity.PublisherId != GetCurrentUserId())
+            {
+                RedirectToAction(nameof(All));
+            }
+
+
             entity.Description = model.Description;
             entity.GenreId = model.GenreId;
             entity.ImageUrl = model.ImageUrl;
-            entity.PublisherId = GetCurrentUserId() ?? string.Empty;
+            entity.PublisherId = currentUser;
             entity.ReleasedOn = releasedOn;
             entity.Title = model.Title;
 
@@ -186,17 +195,18 @@ namespace GameZone.Controllers
 
             string currentUserId = GetCurrentUserId() ?? String.Empty;
 
-            if (entity.GamersGame.Any(gr => gr.GamerId == currentUserId) == false)
+            if (entity.GamersGame.Any(gr => gr.GamerId == currentUserId))
             {
-                entity.GamersGame.Add(new GamerGame()
-                {
-                    GamerId = currentUserId,
-                    GameId = entity.Id
-                });
-
-                await context.SaveChangesAsync();
-
+                RedirectToAction(nameof(All));
             }
+
+            entity.GamersGame.Add(new GamerGame()
+            {
+                GamerId = currentUserId,
+                GameId = entity.Id
+            });
+
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(MyZone));
         }
 
@@ -216,7 +226,7 @@ namespace GameZone.Controllers
 
             GamerGame? gamerGame = entity.GamersGame.FirstOrDefault(gr => gr.GamerId == currentUserId);
 
-            if (gamerGame!=null)
+            if (gamerGame != null)
             {
                 entity.GamersGame.Remove(gamerGame);
 
@@ -243,7 +253,7 @@ namespace GameZone.Controllers
                     Publisher = g.Publisher.UserName ?? String.Empty
                 })
                 .FirstOrDefaultAsync();
-         
+
             return View(model);
         }
 
