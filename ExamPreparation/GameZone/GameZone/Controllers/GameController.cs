@@ -250,8 +250,40 @@ namespace GameZone.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var model = await context.Games
+                .Where(g => g.Id == id)
+                .Where(g => g.IsDeleted == false)
+                .AsNoTracking()
+                .Select(g => new DeleteViewModel()
+                {
+                    Id = g.Id,
+                    Title = g.Title,
+                    Publisher = g.Publisher.UserName ?? String.Empty
+                })
+                .FirstOrDefaultAsync();
+
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(DeleteViewModel model)
+        {
+            Game? game = await context.Games
+                .Where(g => g.Id == model.Id)
+                .Where(g => g.IsDeleted == false)
+                .FirstOrDefaultAsync();
+
+            if (game != null)
+            {
+                game.IsDeleted = true;
+
+                await context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+
 
         private async Task<List<Genre>> GetGenres()
         {
