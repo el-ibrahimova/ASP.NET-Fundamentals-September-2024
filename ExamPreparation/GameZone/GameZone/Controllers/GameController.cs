@@ -24,6 +24,7 @@ namespace GameZone.Controllers
         public async Task<IActionResult> All()
         {
             var model = await context.Games
+                .AsNoTracking()
                 .Where(g => g.IsDeleted == false)
                 .Select(g => new GameInfoModel()
                 {
@@ -34,7 +35,6 @@ namespace GameZone.Controllers
                     ReleasedOn = g.ReleasedOn.ToString(GameReleasedOnDateFormat),
                     Title = g.Title
                 })
-                .AsNoTracking()
                 .ToListAsync();
 
             return View(model);
@@ -112,19 +112,17 @@ namespace GameZone.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(GameViewModel model, int id)
         {
-            if (ModelState.IsValid == false)
-            {
-                model.Genres = await GetGenres();
-                return View(model);
-            }
-
             DateTime releasedOn;
 
             if (DateTime.TryParseExact(model.ReleasedOn, GameReleasedOnDateFormat, CultureInfo.CurrentCulture,
                     DateTimeStyles.None, out releasedOn) == false)
             {
                 ModelState.AddModelError(nameof(model.ReleasedOn), "Invalid date format");
+                return View(model);
+            }
 
+            if (ModelState.IsValid == false)
+            {
                 model.Genres = await GetGenres();
                 return View(model);
             }
@@ -135,7 +133,6 @@ namespace GameZone.Controllers
             {
                 throw new ArgumentException("Invalid id");
             }
-
 
             string currentUser = GetCurrentUserId() ?? String.Empty;
 
@@ -192,18 +189,23 @@ namespace GameZone.Controllers
                 throw new ArgumentException("Invalid id");
             }
 
-            string currentUserId = GetCurrentUserId() ?? String.Empty;
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
 
             if (entity.GamersGame.Any(gr => gr.GamerId == currentUserId))
             {
                 RedirectToAction(nameof(All));
             }
 
-            entity.GamersGame.Add(new GamerGame()
+            if (!entity.GamersGame.Any(e => e.GameId == id))
             {
-                GamerId = currentUserId,
-                GameId = entity.Id
-            });
+                entity.GamersGame.Add(new GamerGame()
+                {
+                    GamerId = currentUserId,
+                    GameId = entity.Id
+                });
+            }
+
+
 
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(MyZone));
