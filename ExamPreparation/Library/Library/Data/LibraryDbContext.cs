@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Library.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Data
@@ -9,6 +10,10 @@ namespace Library.Data
             : base(options)
         {
         }
+
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<IdentityUserBook> UserBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
