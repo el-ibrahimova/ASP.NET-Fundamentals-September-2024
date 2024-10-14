@@ -31,6 +31,6 @@ namespace Homies.Models
         [Required(ErrorMessage = RequireMessage)]
         public int TypeId { get; set; }
 
-        public IEnumerable<TypeViewModel> Types { get; set; } = null!;
+        public IEnumerable<TypeViewModel> Types { get; set; } = new List<TypeViewModel>();
     }
 }
