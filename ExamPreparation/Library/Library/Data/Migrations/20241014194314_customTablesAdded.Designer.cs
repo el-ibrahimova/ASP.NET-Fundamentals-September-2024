@@ -4,6 +4,7 @@ using Library.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241014194314_customTablesAdded")]
+    partial class customTablesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,18 +74,6 @@ namespace Library.Data.Migrations
                         {
                             t.HasComment("Books for the library");
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            Author = "Dolor Sit",
-                            CategoryId = 1,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                            ImageUrl = "https://img.freepik.com/free-psd/book-cover-mock-up-arrangement_23-2148622888.jpg?w=826&t=st=1666106877~exp=1666107477~hmac=5dea3e5634804683bccfebeffdbde98371db37bc2d1a208f074292c862775e1b",
-                            Rating = 9.5m,
-                            Title = "Lorem Ipsum"
-                        });
                 });
 
             modelBuilder.Entity("Library.Data.Models.Category", b =>
@@ -105,33 +96,6 @@ namespace Library.Data.Migrations
                     b.ToTable("Categories", t =>
                         {
                             t.HasComment("Categories for the books");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Action"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Biography"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Children"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Crime"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Fantasy"
                         });
                 });
 

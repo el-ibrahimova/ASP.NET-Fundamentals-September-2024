@@ -17,7 +17,14 @@ namespace Library.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            /* builder
+            builder.Entity<IdentityUserBook>()
+                .HasKey(x => new { x.BookId, x.CollectorId });
+
+            builder.Entity<Book>()
+                .Property(b => b.Rating)
+                .HasPrecision(18, 2);
+
+             builder
                 .Entity<Book>()
                 .HasData(new Book()
                 {
@@ -57,7 +64,7 @@ namespace Library.Data
                     Id = 5,
                     Name = "Fantasy"
                 });
-            */
+            
 
             base.OnModelCreating(builder);
         }

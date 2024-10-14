@@ -1,11 +1,13 @@
 ﻿using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();

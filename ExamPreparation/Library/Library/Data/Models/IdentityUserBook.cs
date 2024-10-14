@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Data.Models
 {
-    [PrimaryKey(nameof(CollectorId), nameof(BookId))]
     [Comment("User Books")]
     public class IdentityUserBook
     {
@@ -14,7 +14,7 @@ namespace Library.Data.Models
 
         [ForeignKey(nameof(CollectorId))]
         [Comment("Collector")]
-        public IdentityUserBook Collector { get; set; } = null!;
+        public IdentityUser Collector { get; set; } = null!;
 
         [Comment("Book Id")]
         public int BookId { get; set; }
