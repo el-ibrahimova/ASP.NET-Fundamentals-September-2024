@@ -1,8 +1,10 @@
-﻿@*@{
+﻿@model IEnumerable<AllBookViewModel>
+
+@{
     ViewBag.Title = "All Books";
 }
+<h2 class="text-center row">@ViewBag.Title</h2>
 
-<h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="text-center row">
@@ -10,13 +12,13 @@
     {
         <div class="card col-4" style="width: 20rem; ">
             <img class="card-img-top" style="width: 18rem;"
-             src="@book.ImageUrl" alt="Book Image">
+                 src="@book.ImageUrl" alt="Book Image">
             <div class="card-body">
 
                 <h5 class="card-title mt-1">@book.Title</h5>
                 <p class="mb-0">Author: @book.Author</p>
                 <p class="mb-0">Rating: @book.Rating</p>
-                <p >Category: @book.Category</p>
+                <p>Category: @book.Category</p>
             </div>
 
             <form class="input-group-sm" asp-controller="Book" asp-action="AddToCollection" asp-route-id="@book.Id">
@@ -25,4 +27,3 @@
         </div>
     }
 </div>
-*@

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models
 {
-    public class BookViewAllModel
+    public class MineBookViewModel
     {
 
         public int Id { get; set; }
@@ -17,14 +17,9 @@ namespace Library.Models
 
         public string ImageUrl { get; set; } = null!;
 
-        public decimal Rating { get; set; }
+        public string Description { get; set; } = null!;
 
-        public int CategoryId { get; set; }
+        public string Category { get; set; } = null!;
 
-        [ForeignKey(nameof(CategoryId))]
-      
-        public Category Category { get; set; } = null!;
-
-       
     }
 }

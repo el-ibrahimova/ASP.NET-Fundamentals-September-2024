@@ -1,4 +1,6 @@
-﻿@*@{
+﻿@model IEnumerable<AllBookViewModel>
+
+@{
     ViewBag.Title = "My Books";
 }
 
@@ -11,7 +13,7 @@
     {
         <div class="card col-4" style="width: 20rem; ">
             <img class="card-img-top" style="width: 18rem;"
-             src="@book.ImageUrl" alt="Book Image">
+                 src="@book.ImageUrl" alt="Book Image">
             <div class="card-body">
 
                 <h5 class="card-title mt-1">@book.Title</h5>
@@ -26,4 +28,3 @@
         </div>
     }
 </div>
-*@
