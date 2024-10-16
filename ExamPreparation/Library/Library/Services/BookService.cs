@@ -98,6 +98,86 @@ namespace Library.Services
                 await data.SaveChangesAsync();
             }
         }
+
+        public async Task<AddBookViewModel> GetNewAddBookModelAsync()
+        {
+            var categories = await data.Categories
+                .AsNoTracking()
+                .Select(c => new CategoryViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+
+            var model = new AddBookViewModel()
+            {
+                Categories = categories
+            };
+
+            return model;
+        }
+
+        public async Task AddBookAsync(AddBookViewModel model)
+        {
+            Book book = new Book()
+            {
+                Title = model.Title,
+                Author = model.Author,
+                ImageUrl = model.Url,
+                Description = model.Description,
+                CategoryId = model.CategoryId,
+                Rating = decimal.Parse(model.Rating)
+            };
+
+            await data.Books.AddAsync(book);
+            await data.SaveChangesAsync();
+        }
+
+        public async Task<AddBookViewModel?> GetBookByIdForEditAsync(int id)
+        {
+            var categories = await data.Categories
+                .AsNoTracking()
+                .Select(c => new CategoryViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+
+            return await data.Books
+                .Where(b => b.Id == id)
+                .AsNoTracking()
+                .Select(b => new AddBookViewModel()
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Url = b.ImageUrl,
+                    Description = b.Description,
+                    Rating = b.Rating.ToString(),
+                    CategoryId = b.CategoryId,
+                    Categories = categories
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task EditBookAsync(AddBookViewModel model, int id)
+        {
+           var book = await data.Books.FindAsync(id);
+
+           if (book != null)
+           {
+               book.Title = model.Title;
+               book.Author = model.Author;
+               book.ImageUrl = model.Url;
+               book.Description = model.Description;
+               book.CategoryId = model.CategoryId;
+               book.Rating = decimal.Parse(model.Rating);
+
+               await data.SaveChangesAsync();
+           }
+        }
     }
 }
 
