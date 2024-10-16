@@ -7,7 +7,10 @@ namespace Library.Contracts
         Task<IEnumerable<AllBookViewModel>> GetAllBooksAsync();
         Task<IEnumerable<MineBookViewModel>> GetMineBooksAsync(string userId);
 
-        Task AddBookToCollectionAsync(string userId, BookViewModel bookModel);
+
         Task<BookViewModel?> GetBookByIdAsync(int id);
+        Task AddBookToCollectionAsync(string userId, BookViewModel bookModel);
+        Task RemoveBookFromCollectionAsync(string userId, BookViewModel bookModel);
+
     }
 }

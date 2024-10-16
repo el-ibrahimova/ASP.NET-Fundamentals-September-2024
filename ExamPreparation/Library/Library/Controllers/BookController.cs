@@ -32,7 +32,8 @@ namespace Library.Controllers
             return View(myBooks);
         }
 
-        public async Task<IActionResult> AddToController(int id)
+        [HttpPost]
+        public async Task<IActionResult> AddToCollection(int id)
         {
             var book = await bookService.GetBookByIdAsync(id);
 
@@ -43,18 +44,26 @@ namespace Library.Controllers
 
             var userId = GetUserId();
 
-            try
-            {
-                await bookService.AddBookToCollectionAsync(userId, book);
-            }
-            catch(InvalidOperationException ie)
-            {
-                return RedirectToAction(nameof(All));
-            }
+            await bookService.AddBookToCollectionAsync(userId, book);
 
             return RedirectToAction(nameof(All));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCollection(int id)
+        {
+            var book = await bookService.GetBookByIdAsync(id);
 
+            if (book == null)
+            {
+                return RedirectToAction(nameof(Mine));
+            }
+
+            var userId = GetUserId();
+
+            await bookService.RemoveBookFromCollectionAsync(userId, book);
+
+            return RedirectToAction(nameof(Mine));
+        }
     }
 }
