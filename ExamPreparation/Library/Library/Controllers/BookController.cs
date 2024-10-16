@@ -25,11 +25,34 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Mine(int id)
+        public async Task<IActionResult> Mine()
         {
-            var mineBooks = await bookService.GetMineBooksAsync();
+            var myBooks = await bookService.GetMineBooksAsync(GetUserId());
 
-            return View(mineBooks);
+            return View(myBooks);
+        }
+
+        public async Task<IActionResult> AddToController(int id)
+        {
+            var book = await bookService.GetBookByIdAsync(id);
+
+            if (book == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            var userId = GetUserId();
+
+            try
+            {
+                await bookService.AddBookToCollectionAsync(userId, book);
+            }
+            catch(InvalidOperationException ie)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return RedirectToAction(nameof(All));
         }
 
 

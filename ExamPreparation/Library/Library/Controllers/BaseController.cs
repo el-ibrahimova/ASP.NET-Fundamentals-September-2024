@@ -8,9 +8,9 @@ namespace Library.Controllers
     public class BaseController : Controller
     {
 
-        protected string? GetUserId()
+        protected string GetUserId()
         {
-            string? id = null;
+            string id = String.Empty;
 
             if (User != null)
             {
