@@ -20,7 +20,6 @@ namespace SeminarHub.Data
             builder.Entity<SeminarParticipant>()
                 .HasKey(sp => new { sp.ParticipantId, sp.SeminarId });
 
-
             builder
                .Entity<Category>()
                .HasData(new Category()
