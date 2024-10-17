@@ -242,7 +242,6 @@ namespace SeminarHub.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-
             var model = await data.Seminars
                              .Where(s => s.Id == id)
                              .AsNoTracking() 
@@ -264,6 +263,39 @@ namespace SeminarHub.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await data.Seminars
+                .Where(s => s.Id == id)
+                .AsNoTracking()
+                .Select(s => new DeleteViewModel()
+                {
+                    Id = s.Id,
+                    Topic = s.Topic,
+                    DateAndTime = s.DateAndTime.ToString(DateFormat)
+                })
+                .FirstOrDefaultAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(DeleteViewModel model)
+        {
+            var seminar = await data.Seminars
+                .Where(s => s.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            if (seminar != null)
+            {
+                data.Seminars.Remove(seminar);
+                await data.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(All));
         }
 
         private async Task<IEnumerable<CategoryViewModel>> GetCategories()

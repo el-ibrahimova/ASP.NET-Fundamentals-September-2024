@@ -8,7 +8,7 @@
         public string Lecturer { get; set; } = null!;
         public string Details { get; set; } = null!;
         public string Category { get; set; } = null!;
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
         public string Organizer { get; set; } = null!;
     }
    

@@ -40,7 +40,7 @@ namespace SeminarHub.Data.Models
         public DateTime DateAndTime { get; set; }
 
         [Comment("Duration of the seminar")]
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
         [Required]
         [Comment("Category identifier")]

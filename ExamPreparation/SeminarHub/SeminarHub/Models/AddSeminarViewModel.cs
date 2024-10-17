@@ -25,10 +25,10 @@ namespace SeminarHub.Models
         public string Details { get; set; } = null!;
 
         [Required] 
-        public string DateAndTime { get; set; } = string.Format(DateFormat);
+        public string DateAndTime { get; set; } = null!;
 
-        [Range(DurationMinValue, DurationMaxValue)]
-        public int Duration { get; set; }
+      //  [Range(DurationMinValue, DurationMaxValue)]
+        public int? Duration { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
