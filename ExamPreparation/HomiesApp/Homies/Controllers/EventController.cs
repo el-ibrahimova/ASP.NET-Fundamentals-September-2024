@@ -156,6 +156,7 @@ namespace Homies.Controllers
             {
                 ModelState.AddModelError(nameof(model.End), $"Invalid date! Format must be: {DateFormat}");
 
+                model.Types = await GetTypes();
                 return View(model);
             }
 

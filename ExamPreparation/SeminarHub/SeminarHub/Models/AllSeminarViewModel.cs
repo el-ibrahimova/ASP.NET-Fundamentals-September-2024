@@ -7,6 +7,6 @@
         public required string Lecturer { get; set; } = null!;
         public required string Category { get; set; } = null!;
         public required string Organizer { get; set; } = null!;
-        public string? DateAndTime { get; set; } = null!;
+        public required string DateAndTime { get; set; } = string.Format(Common.ApplicationConstants.DateFormat);
     }
 }

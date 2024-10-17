@@ -40,7 +40,7 @@ namespace SeminarHub.Data.Models
         public DateTime DateAndTime { get; set; }
 
         [Comment("Duration of the seminar")]
-        public int? Duration { get; set; }
+        public int Duration { get; set; }
 
         [Required]
         [Comment("Category identifier")]
@@ -50,6 +50,6 @@ namespace SeminarHub.Data.Models
         [Comment("Category of the seminar")]
         public Category Category { get; set; } = null!;
 
-        public IEnumerable<SeminarParticipant> SeminarsParticipants { get; set; } = new HashSet<SeminarParticipant>();
+        public ICollection<SeminarParticipant> SeminarsParticipants { get; set; } = new HashSet<SeminarParticipant>();
     }
 }

@@ -1,8 +1,9 @@
-﻿@{
+﻿@model DetailsViewModel
+@{
     ViewBag.Title = "Seminar Details";
 }
 
-@* 
+
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
@@ -23,9 +24,8 @@
             <a asp-controller="Seminar" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
             <a asp-controller="Seminar" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
         }
-
     </div>
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
+} 
