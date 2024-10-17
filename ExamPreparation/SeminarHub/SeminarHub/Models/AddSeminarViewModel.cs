@@ -9,7 +9,6 @@ namespace SeminarHub.Models
 {
     public class AddSeminarViewModel
     {
-
         [Required]
         [MaxLength(TopicMaxLength)]
         [MinLength(TopicMinLength)]
@@ -25,8 +24,7 @@ namespace SeminarHub.Models
         [MinLength(DetailsMinLength)]
         public string Details { get; set; } = null!;
 
-
-        [Required] 
+       [Required] 
         public string DateAndTime { get; set; } = null!;
 
 
@@ -36,8 +34,6 @@ namespace SeminarHub.Models
         [Range(1, int.MaxValue)]
         public int CategoryId { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
-
-        public IEnumerable<Category> Categories { get; set; } = null!;
+        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
     }
 }
