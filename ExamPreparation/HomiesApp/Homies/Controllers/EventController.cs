@@ -160,7 +160,6 @@ namespace Homies.Controllers
                 return View(model);
             }
 
-
             if (!ModelState.IsValid)
             {
                 model.Types = await GetTypes();
