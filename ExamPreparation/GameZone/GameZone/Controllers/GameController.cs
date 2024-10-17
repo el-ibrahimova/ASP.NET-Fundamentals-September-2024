@@ -141,7 +141,6 @@ namespace GameZone.Controllers
                 RedirectToAction(nameof(All));
             }
 
-
             entity.Description = model.Description;
             entity.GenreId = model.GenreId;
             entity.ImageUrl = model.ImageUrl;
@@ -291,9 +290,7 @@ namespace GameZone.Controllers
 
             return RedirectToAction(nameof(All));
         }
-
-
-
+        
         private async Task<List<Genre>> GetGenres()
         {
             return await context.Genres
