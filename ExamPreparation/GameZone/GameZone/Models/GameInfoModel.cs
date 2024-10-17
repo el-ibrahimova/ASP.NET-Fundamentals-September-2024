@@ -11,6 +11,5 @@
         public required string ReleasedOn { get; set; }
 
         public required string Publisher { get; set; } 
-
     }
 }
