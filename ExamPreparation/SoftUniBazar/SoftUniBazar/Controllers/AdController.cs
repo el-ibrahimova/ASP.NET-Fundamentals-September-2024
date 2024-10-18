@@ -44,7 +44,7 @@ namespace SoftUniBazar.Controllers
         public async Task<IActionResult> Add()
         {
             var model = new AdViewModel();
-            model.Categories= await GetCategories();
+            model.Categories = await GetCategories();
 
             return View(model);
         }
@@ -52,7 +52,7 @@ namespace SoftUniBazar.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AdViewModel model)
         {
-          if (ModelState.IsValid == false)
+            if (ModelState.IsValid == false)
             {
                 model.Categories = await GetCategories();
                 return View(model);
@@ -76,6 +76,56 @@ namespace SoftUniBazar.Controllers
             return RedirectToAction("All", "Ad");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Cart()
+        {
+            string userId = GetUserId();
+
+            var model = await data.AdsBuyers
+                .AsNoTracking()
+                .Where(b=>b.BuyerId==userId)
+                .Select(a => new MyCartViewModel()
+                {
+                    Name = a.Ad.Name,
+                    CreatedOn = a.Ad.CreatedOn.ToString(EntityDateFormat),
+                    Category = a.Ad.Category.Name,
+                    Description = a.Ad.Description,
+                    Price = a.Ad.Price,
+                    Owner = userId
+                })
+                .ToListAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int id)
+        {
+            var ad = await data.Ads
+                .Where(a => a.Id == id)
+                .Include(ba => ba.AdsBuyers)
+                .FirstOrDefaultAsync();
+
+            if (ad == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = GetUserId();
+
+            if (ad.AdsBuyers.Any(b => b.BuyerId == userId)== false)
+            {
+                ad.AdsBuyers.Add( new AdBuyer()
+                {
+                    BuyerId = userId,
+                    AdId = ad.Id
+                });
+
+                await data.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Cart));
+        }
 
         private async Task<IEnumerable<CategoryViewModel>> GetCategories()
         {

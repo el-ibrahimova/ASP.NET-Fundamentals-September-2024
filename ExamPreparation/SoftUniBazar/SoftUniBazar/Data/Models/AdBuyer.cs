@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace SoftUniBazar.Data.Models
 {
@@ -18,6 +17,5 @@ namespace SoftUniBazar.Data.Models
 
         [ForeignKey(nameof(AdId))]
         public Ad Ad { get; set; } = null!;
-
     }
 }

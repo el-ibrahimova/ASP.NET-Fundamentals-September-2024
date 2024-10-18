@@ -39,5 +39,7 @@ namespace SoftUniBazar.Data.Models
         [ForeignKey(nameof(CategoryId))]
         [Required]
         public Category Category { get; set; } = null!;
+
+        public ICollection<AdBuyer> AdsBuyers { get; set; } = new HashSet<AdBuyer>();
     }
 }
