@@ -13,7 +13,6 @@ namespace SeminarHub.Controllers
                 return RedirectToAction("All", "Seminar");
             }
             return View();
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

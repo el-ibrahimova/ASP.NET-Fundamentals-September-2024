@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SoftUniBazar.Data;
+using SoftUniBazar.Data.Models;
 using SoftUniBazar.Models;
 using static SoftUniBazar.Common.EntityConstants;
 
 namespace SoftUniBazar.Controllers
 {
+    [Authorize]
     public class AdController : Controller
     {
         private readonly BazarDbContext data;
@@ -35,6 +40,43 @@ namespace SoftUniBazar.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            var model = new AdViewModel();
+            model.Categories= await GetCategories();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AdViewModel model)
+        {
+          if (ModelState.IsValid == false)
+            {
+                model.Categories = await GetCategories();
+                return View(model);
+            }
+
+            Ad newAd = new Ad()
+            {
+                Id = model.Id,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                Price = model.Price,
+                CategoryId = model.CategoryId,
+                Name = model.Name,
+                OwnerId = GetUserId(),
+                CreatedOn = DateTime.Now
+            };
+
+            await data.Ads.AddAsync(newAd);
+            await data.SaveChangesAsync();
+
+            return RedirectToAction("All", "Ad");
+        }
+
+
         private async Task<IEnumerable<CategoryViewModel>> GetCategories()
         {
             return await data.Categories
@@ -44,6 +86,11 @@ namespace SoftUniBazar.Controllers
                     Name = c.Name
                 })
                 .ToListAsync();
+        }
+
+        private string GetUserId()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? String.Empty;
         }
     }
 }
