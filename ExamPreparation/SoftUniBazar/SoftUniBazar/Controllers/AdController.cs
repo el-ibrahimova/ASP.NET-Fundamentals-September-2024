@@ -91,7 +91,8 @@ namespace SoftUniBazar.Controllers
                     Category = a.Ad.Category.Name,
                     Description = a.Ad.Description,
                     Price = a.Ad.Price,
-                    Owner = userId
+                    Owner = userId,
+                    ImageUrl = a.Ad.ImageUrl
                 })
                 .ToListAsync();
 
@@ -125,6 +126,70 @@ namespace SoftUniBazar.Controllers
             }
 
             return RedirectToAction(nameof(Cart));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var ad = await data.Ads.FindAsync(id);
+
+            if (ad == null)
+            {
+                return BadRequest();
+            }
+
+            if (ad.OwnerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            var model = new AdViewModel()
+            {
+                CategoryId = ad.CategoryId,
+                Description = ad.Description,
+                Name = ad.Name,
+                Id = ad.Id,
+                ImageUrl = ad.ImageUrl,
+                Price = ad.Price
+            };
+
+            model.Categories = await GetCategories();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdViewModel model, int id)
+        {
+            var ad = await data.Ads.FindAsync(id);
+
+            if (ad == null)
+            {
+                return BadRequest();
+            }
+
+            if (ad.OwnerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await GetCategories();
+                return View(model);
+            }
+
+
+            ad.CategoryId = model.Id;
+            ad.Description = model.Description;
+            ad.Name = model.Name;
+            ad.ImageUrl = model.ImageUrl;
+            ad.Price = model.Price;
+            ad.Id = model.Id;
+
+            await data.SaveChangesAsync();
+
+            return RedirectToAction(nameof(All));
         }
 
         private async Task<IEnumerable<CategoryViewModel>> GetCategories()
