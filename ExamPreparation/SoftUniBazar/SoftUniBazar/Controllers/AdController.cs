@@ -73,7 +73,7 @@ namespace SoftUniBazar.Controllers
             await data.Ads.AddAsync(newAd);
             await data.SaveChangesAsync();
 
-            return RedirectToAction("All", "Ad");
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -86,6 +86,7 @@ namespace SoftUniBazar.Controllers
                 .Where(b=>b.BuyerId==userId)
                 .Select(a => new MyCartViewModel()
                 {
+                    Id=a.Ad.Id,
                     Name = a.Ad.Name,
                     CreatedOn = a.Ad.CreatedOn.ToString(EntityDateFormat),
                     Category = a.Ad.Category.Name,
@@ -116,10 +117,17 @@ namespace SoftUniBazar.Controllers
 
             if (ad.AdsBuyers.Any(b => b.BuyerId == userId)== false)
             {
+                bool isAlreadyAdded = data.AdsBuyers.Any(b => b.BuyerId == userId || b.AdId == id);
+
+                if (isAlreadyAdded)
+                {
+                    return RedirectToAction(nameof(All));
+                }
+
                 ad.AdsBuyers.Add( new AdBuyer()
                 {
                     BuyerId = userId,
-                    AdId = ad.Id
+                    AdId = id
                 });
 
                 await data.SaveChangesAsync();
@@ -178,8 +186,7 @@ namespace SoftUniBazar.Controllers
                 model.Categories = await GetCategories();
                 return View(model);
             }
-
-
+            
             ad.CategoryId = model.Id;
             ad.Description = model.Description;
             ad.Name = model.Name;
@@ -187,6 +194,29 @@ namespace SoftUniBazar.Controllers
             ad.Price = model.Price;
             ad.Id = model.Id;
 
+            await data.SaveChangesAsync();
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(int id)
+        {
+            var ad = await data.Ads
+                .Where(a => a.Id == id)
+                .Include(b=>b.AdsBuyers)
+                .FirstOrDefaultAsync();
+
+            var buyer = await data.AdsBuyers
+                .Where(b => b.BuyerId == GetUserId())
+                .FirstOrDefaultAsync();
+
+            if (ad == null || buyer == null)
+            {
+                return BadRequest();
+            }
+
+            data.AdsBuyers.Remove(buyer);
             await data.SaveChangesAsync();
 
             return RedirectToAction(nameof(All));
