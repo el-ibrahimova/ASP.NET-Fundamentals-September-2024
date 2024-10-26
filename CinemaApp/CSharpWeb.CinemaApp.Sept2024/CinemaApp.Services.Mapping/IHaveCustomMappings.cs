@@ -2,7 +2,7 @@
 {
     using AutoMapper;
 
-    public interface IHaveCustomMappings<T>
+    public interface IHaveCustomMappings
     {
         void CreateMappings(IProfileExpression configuration);
     }

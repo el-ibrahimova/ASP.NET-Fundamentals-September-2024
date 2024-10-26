@@ -1,12 +1,13 @@
-using CinemaApp.Data;
-using CinemaApp.Data.Models;
-using CinemaApp.Web.Infrastructure.Extensions;
-using CinemaApp.Web.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 namespace CinemaApp.Web
 {
+    using Data;
+    using Data.Models;
+    using Services.Mapping;
+    using Infrastructure.Extensions;
+    using ViewModels;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -41,6 +42,7 @@ namespace CinemaApp.Web
 
             WebApplication app = builder.Build();
 
+            // optionally - just copy the code from this project to use it in another
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 
             // Configure the HTTP request pipeline.
