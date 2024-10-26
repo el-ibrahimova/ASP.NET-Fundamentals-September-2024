@@ -184,7 +184,15 @@ namespace SoftUniBazar.Controllers
                 return View(model);
             }
 
-            ad.CategoryId = model.Id;
+            if (!data.Categories.Any(c => c.Id == model.CategoryId))
+            {
+               ModelState.AddModelError("Id", "Invalid Id");
+                model.Categories = await GetCategories();
+                return View(model);
+                
+            }
+
+            ad.CategoryId = model.CategoryId;
             ad.Description = model.Description;
             ad.Name = model.Name;
             ad.ImageUrl = model.ImageUrl;

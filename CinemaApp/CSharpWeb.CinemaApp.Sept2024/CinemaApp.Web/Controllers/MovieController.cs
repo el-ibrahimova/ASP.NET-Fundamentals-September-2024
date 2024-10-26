@@ -15,7 +15,7 @@ namespace CinemaApp.Web.Controllers
     {
         private readonly CinemaDbContext dbContext;
 
-        // dependency injection of our DbContext
+        // dependency injection of our DbContext. This type is constructor injection
         public MovieController(CinemaDbContext dbContext)
         {
             this.dbContext = dbContext;

@@ -21,7 +21,7 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<CinemaIndexViewModel> cinemas = await this.dbContext.Cinemas
+           var cinemas = await this.dbContext.Cinemas
                 .Select(c => new CinemaIndexViewModel()
                 {
                     Id = c.Id.ToString(),
@@ -83,7 +83,7 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
-            CinemaDetailsViewModel viewModel = new CinemaDetailsViewModel()
+           var viewModel = new CinemaDetailsViewModel()
             {
                 Name = cinema.Name,
                 Location = cinema.Location,
