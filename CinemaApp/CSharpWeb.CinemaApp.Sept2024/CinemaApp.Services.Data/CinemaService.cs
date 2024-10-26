@@ -1,4 +1,5 @@
 ﻿using CinemaApp.Services.Mapping;
+using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Services.Data
@@ -28,14 +29,47 @@ namespace CinemaApp.Services.Data
             return cinemas;
         }
 
-        public Task AddCinemaAsync(AddCinemaFormModel model)
+        public async Task AddCinemaAsync(AddCinemaFormModel model)
         {
-            throw new NotImplementedException();
+            Cinema cinema = new Cinema();
+
+            AutoMapperConfig.MapperInstance.Map(model, cinema);
+
+            await this.cinemaRepository.AddAsync(cinema);
         }
 
-        public Task<CinemaDetailsViewModel> GetCinemaDetailsByIdAsync(Guid id)
+        public async Task<CinemaDetailsViewModel?> GetCinemaDetailsByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            Cinema? cinema = await this.cinemaRepository
+                .GetAllAttached()
+                .Include(c => c.MovieCinemas)
+                .ThenInclude(cm => cm.Movie)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            CinemaDetailsViewModel? viewModel = null;
+
+            // invalid (non-existing) GUID in the URL
+            if (cinema != null)
+            {
+                viewModel = new CinemaDetailsViewModel()
+                {
+                    Name = cinema.Name,
+                    Location = cinema.Location,
+                    Movies = cinema
+                        .MovieCinemas
+                        .Where(cm => cm.IsDeleted == false)
+                        .Select(cm => new CinemaMovieViewModel()
+                        {
+                            Title = cm.Movie.Title,
+                            Duration = cm.Movie.Duration
+                        })
+                        .ToArray()
+                };
+            }
+
+            return viewModel;
         }
     }
 }
+
+

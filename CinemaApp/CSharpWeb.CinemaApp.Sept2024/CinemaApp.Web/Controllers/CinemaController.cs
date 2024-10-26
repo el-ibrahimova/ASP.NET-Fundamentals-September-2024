@@ -16,7 +16,7 @@ namespace CinemaApp.Web.Controllers
 
         private readonly ICinemaService cinemaService;
 
-        public CinemaController(CinemaDbContext dbContext,  ICinemaService cinemaService)
+        public CinemaController(CinemaDbContext dbContext, ICinemaService cinemaService)
         {
             this.dbContext = dbContext;
             this.cinemaService = cinemaService;
@@ -27,18 +27,18 @@ namespace CinemaApp.Web.Controllers
         {
             // the next logic is moved to CinemaService
 
-           //var cinemas = await this.dbContext.Cinemas
-           //     .Select(c => new CinemaIndexViewModel()
-           //     {
-           //         Id = c.Id.ToString(),
-           //         Name = c.Name,
-           //         Location = c.Location
-           //     })
-           //     .OrderBy(c => c.Location)
-           //     .ToArrayAsync();
+            //var cinemas = await this.dbContext.Cinemas
+            //     .Select(c => new CinemaIndexViewModel()
+            //     {
+            //         Id = c.Id.ToString(),
+            //         Name = c.Name,
+            //         Location = c.Location
+            //     })
+            //     .OrderBy(c => c.Location)
+            //     .ToArrayAsync();
 
-           var cinemas = await this.cinemaService
-               .IndexGetAllOrderedByLocationAsync();
+            var cinemas = await this.cinemaService
+                .IndexGetAllOrderedByLocationAsync();
 
             return this.View(cinemas);
         }
@@ -57,14 +57,16 @@ namespace CinemaApp.Web.Controllers
                 return this.View(model);
             }
 
-            Cinema cinema = new Cinema()
-            {
-                Name = model.Name,
-                Location = model.Location
-            };
+            //Cinema cinema = new Cinema()
+            //{
+            //    Name = model.Name,
+            //    Location = model.Location
+            //};
 
-            await this.dbContext.Cinemas.AddAsync(cinema);
-            await this.dbContext.SaveChangesAsync();
+            //await this.dbContext.Cinemas.AddAsync(cinema);
+            //await this.dbContext.SaveChangesAsync();
+
+            await this.cinemaService.AddCinemaAsync(model);
 
             return this.RedirectToAction(nameof(Index));
         }
@@ -80,33 +82,15 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
-            Cinema? cinema = await this.dbContext
-                .Cinemas
-                .Include(c=>c.MovieCinemas)
-                .ThenInclude(cm=>cm.Movie)
-                .FirstOrDefaultAsync(c => c.Id == cinemaGuid);
+            CinemaDetailsViewModel? viewModel = await this.cinemaService
+                .GetCinemaDetailsByIdAsync(cinemaGuid)
 
-            // invalid (non-existing) GUID in the URL
-            if (cinema == null)
+            // Invalid (non-existing) Guid in the URL
+            if (viewModel == null)
             {
                 return this.RedirectToAction(nameof(Index));
             }
-
-           var viewModel = new CinemaDetailsViewModel()
-            {
-                Name = cinema.Name,
-                Location = cinema.Location,
-                Movies = cinema
-                    .MovieCinemas
-                    .Where(cm=>cm.IsDeleted==false)
-                    .Select(cm => new CinemaMovieViewModel()
-                    {
-                        Title = cm.Movie.Title,
-                        Duration = cm.Movie.Duration
-                    })
-                    .ToArray()
-            };
-
+            
             return this.View(viewModel);
         }
     }
