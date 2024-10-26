@@ -6,5 +6,7 @@ namespace CinemaApp.Services.Data.Interfaces
     {
         Task<IEnumerable<AllMoviesIndexViewModel>> GetAllMoviesAsync();
 
+        Task <bool> AddMovieAsync(AddMovieInputModel inputModel);
+
     }
 }

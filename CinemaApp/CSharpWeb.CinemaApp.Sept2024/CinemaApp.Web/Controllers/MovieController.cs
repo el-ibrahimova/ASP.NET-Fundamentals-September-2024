@@ -25,11 +25,9 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Movie> allMovies = await this.dbContext
-                .Movies
-                .ToArrayAsync();
+            var allMovies = await this.movieService.GetAllMoviesAsync();
 
-            return View(allMovies);
+            return this.View(allMovies);
         }
 
         [HttpGet]
@@ -41,36 +39,20 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddMovieInputModel inputModel)
         {
-            bool isReleaseDateValid = DateTime.TryParseExact(inputModel.ReleaseDate, ReleaseDateFormat,
-                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime releaseDate);
-
-            if (!isReleaseDateValid)
-            {
-                // ModelState becomes invalid => IsValid==false
-                this.ModelState.AddModelError(nameof(inputModel.ReleaseDate),
-                    string.Format("The Release Date must be in the following format : {0}", ReleaseDateFormat));
-                return this.View(inputModel);
-            }
-
             if (!this.ModelState.IsValid)
             {
                 // Render the same form with user entered values + model errors
                 return this.View(inputModel);
             }
 
-            Movie movie = new Movie()
-            {
-                Title = inputModel.Title,
-                Genre = inputModel.Genre,
-                ReleaseDate = releaseDate,
-                Director = inputModel.Director,
-                Duration = inputModel.Duration,
-                Description = inputModel.Description,
-                ImageUrl = inputModel.ImageUrl
-            };
+            bool result = await this.movieService.AddMovieAsync(inputModel);
 
-            await this.dbContext.Movies.AddAsync(movie);
-            await this.dbContext.SaveChangesAsync();
+            if (result == false)
+            {
+                this.ModelState.AddModelError(nameof(inputModel.ReleaseDate), string.Format("The Release Date must be in the following format: {0}", ReleaseDateFormat));
+
+                return this.View(inputModel);
+            }
 
             return this.RedirectToAction(nameof(Index));
         }
@@ -135,7 +117,7 @@ namespace CinemaApp.Web.Controllers
                         Location = c.Location,
                         IsSelected = c.MovieCinemas
                             .Any(cm => cm.Movie.Id == movieGuid
-                            && cm.IsDeleted==false),
+                            && cm.IsDeleted == false),
                     })
                     .ToArrayAsync()
             };

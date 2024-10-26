@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Data.Repository;
@@ -15,8 +16,8 @@ namespace CinemaApp.Web.Infrastructure.Extensions
             Type[] typesToExclude = new Type[] { typeof(ApplicationUser) };
             Type[] modelTypes = modelsAssembly
                 .GetTypes()
-                .Where(t => !t.IsAbstract && 
-                                 !t.IsInterface && 
+                .Where(t => !t.IsAbstract &&
+                                 !t.IsInterface &&
                                  !t.Name.ToLower().EndsWith("attribute"))
                 .ToArray();
 
@@ -49,6 +50,34 @@ namespace CinemaApp.Web.Infrastructure.Extensions
 
                     services.AddScoped(repositoryInterface, repositoryInstanceType);
                 }
+            }
+        }
+
+
+        public static void RegisterUserDefinedServices(this IServiceCollection services, Assembly serviceAssembly)
+        {
+            Type[] serviceInterfaceTypes = serviceAssembly
+                .GetTypes()
+                .Where(t => t.IsInterface)
+                .ToArray();
+
+            Type[] serviceTypes = serviceAssembly
+                .GetTypes()
+                .Where(t => !t.IsInterface && !t.IsAbstract
+                && t.Name.ToLower().EndsWith("Service"))
+                .ToArray();
+
+            foreach (Type serviceInterfaceType in serviceInterfaceTypes)
+            {
+                Type? serviceType = serviceTypes
+                    .SingleOrDefault(t => "i" + t.Name.ToLower() == serviceInterfaceType.Name.ToLower());
+
+                if (serviceType == null)
+                {
+                    throw new NullReferenceException($"Service type could not be obtained for the service {serviceInterfaceType.Name}");
+                }
+
+                services.AddScoped(serviceInterfaceType, serviceType);
             }
         }
     }

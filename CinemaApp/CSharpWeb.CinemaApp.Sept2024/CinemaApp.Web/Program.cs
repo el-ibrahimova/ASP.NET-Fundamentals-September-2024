@@ -45,8 +45,7 @@ namespace CinemaApp.Web
 
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
-            builder.Services.AddScoped<ICinemaService, CinemaService>();
-
+            builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
