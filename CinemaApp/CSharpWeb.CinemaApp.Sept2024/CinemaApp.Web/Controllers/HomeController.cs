@@ -1,10 +1,6 @@
 namespace CinemaApp.Web.Controllers
 {
-    using System.Diagnostics; // System namespaces
-
     using Microsoft.AspNetCore.Mvc; // Third-party namespaces
-
-    using ViewModels; // Internal project namespaces
 
     public class HomeController : Controller
     {

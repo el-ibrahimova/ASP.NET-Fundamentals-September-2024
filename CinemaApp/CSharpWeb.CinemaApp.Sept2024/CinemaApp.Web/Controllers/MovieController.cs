@@ -1,4 +1,5 @@
-﻿using CinemaApp.Web.ViewModels.Cinema;
+﻿using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.ViewModels.Cinema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Web.Controllers
@@ -13,12 +14,12 @@ namespace CinemaApp.Web.Controllers
 
     public class MovieController : BaseController
     {
-        private readonly CinemaDbContext dbContext;
+        private readonly IMovieService movieService;
 
         // dependency injection of our DbContext. This type is constructor injection
-        public MovieController(CinemaDbContext dbContext)
+        public MovieController(IMovieService movieService)
         {
-            this.dbContext = dbContext;
+            this.movieService = movieService;
         }
 
         [HttpGet]
@@ -133,7 +134,8 @@ namespace CinemaApp.Web.Controllers
                         Name = c.Name,
                         Location = c.Location,
                         IsSelected = c.MovieCinemas
-                            .Any(cm => cm.Movie.Id == movieGuid),
+                            .Any(cm => cm.Movie.Id == movieGuid
+                            && cm.IsDeleted==false),
                     })
                     .ToArrayAsync()
             };

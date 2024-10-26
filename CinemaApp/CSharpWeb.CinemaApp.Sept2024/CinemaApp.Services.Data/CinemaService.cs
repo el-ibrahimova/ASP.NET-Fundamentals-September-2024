@@ -20,6 +20,16 @@ namespace CinemaApp.Services.Data
 
         public async Task<IEnumerable<CinemaIndexViewModel>> IndexGetAllOrderedByLocationAsync()
         {
+            //var cinemas = await this.dbContext.Cinemas
+            //     .Select(c => new CinemaIndexViewModel()
+            //     {
+            //         Id = c.Id.ToString(),
+            //         Name = c.Name,
+            //         Location = c.Location
+            //     })
+            //     .OrderBy(c => c.Location)
+            //     .ToArrayAsync();
+
             var cinemas = await this.cinemaRepository
                 .GetAllAttached()
                 .OrderBy(c => c.Location)
@@ -31,6 +41,15 @@ namespace CinemaApp.Services.Data
 
         public async Task AddCinemaAsync(AddCinemaFormModel model)
         {
+            //Cinema cinema = new Cinema()
+            //{
+            //    Name = model.Name,
+            //    Location = model.Location
+            //};
+
+            //await this.dbContext.Cinemas.AddAsync(cinema);
+            //await this.dbContext.SaveChangesAsync();
+            
             Cinema cinema = new Cinema();
 
             AutoMapperConfig.MapperInstance.Map(model, cinema);
