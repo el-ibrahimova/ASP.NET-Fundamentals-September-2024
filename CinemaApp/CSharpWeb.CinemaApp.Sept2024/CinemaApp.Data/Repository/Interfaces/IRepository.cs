@@ -4,6 +4,7 @@
     {
         TType GetById(TId id);
         Task<TType> GetByIdAsync(TId id);
+        Task<TType> GetByIdAsync(params TId[] id);
 
         IEnumerable<TType> GetAll();
         Task<IEnumerable<TType>> GetAllAsync();
@@ -13,6 +14,11 @@
 
         void Add(TType item);
         Task AddAsync(TType item);
+
+
+
+        void AddRange(TType items);
+        Task AddRangeAsync(TType[] items);
 
         bool Delete(TId id);
         Task<bool> DeleteAsync(TId id);

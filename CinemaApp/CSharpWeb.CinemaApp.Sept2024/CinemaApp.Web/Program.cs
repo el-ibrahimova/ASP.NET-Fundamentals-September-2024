@@ -1,19 +1,15 @@
-using System.Reflection;
-using CinemaApp.Data.Repository;
-using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data;
 using CinemaApp.Services.Data.Interfaces;
-using NuGet.Protocol.Core.Types;
 
 namespace CinemaApp.Web
 {
     using Data;
     using Data.Models;
-    using Services.Mapping;
     using Infrastructure.Extensions;
-    using ViewModels;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using Services.Mapping;
+    using ViewModels;
 
     public class Program
     {
@@ -46,6 +42,8 @@ namespace CinemaApp.Web
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
+
+            builder.Services.AddScoped<ICinemaService, CinemaService>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

@@ -1,24 +1,23 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using CinemaApp.Data.Models;
-using CinemaApp.Data.Repository.Interfaces;
-using CinemaApp.Data.Repository;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace CinemaApp.Web.Infrastructure.Extensions
+﻿namespace CinemaApp.Web.Infrastructure.Extensions
 {
+    using System.Reflection;
+
+    using Data.Models;
+    using Data.Repository;
+    using Data.Repository.Interfaces;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class ServiceCollectionExtensions
     {
         public static void RegisterRepositories(this IServiceCollection services, Assembly modelsAssembly)
         {
             // TODO: Re-write the implementation in such way that the user must create a single class for every repository
-
             Type[] typesToExclude = new Type[] { typeof(ApplicationUser) };
             Type[] modelTypes = modelsAssembly
                 .GetTypes()
-                .Where(t => !t.IsAbstract &&
-                                 !t.IsInterface &&
-                                 !t.Name.ToLower().EndsWith("attribute"))
+                .Where(t => !t.IsAbstract && !t.IsInterface &&
+                            !t.Name.ToLower().EndsWith("attribute"))
                 .ToArray();
 
             foreach (Type type in modelTypes)
@@ -27,7 +26,6 @@ namespace CinemaApp.Web.Infrastructure.Extensions
                 {
                     Type repositoryInterface = typeof(IRepository<,>);
                     Type repositoryInstanceType = typeof(BaseRepository<,>);
-
                     PropertyInfo? idPropInfo = type
                         .GetProperties()
                         .Where(p => p.Name.ToLower() == "id")
@@ -53,25 +51,22 @@ namespace CinemaApp.Web.Infrastructure.Extensions
             }
         }
 
-
         public static void RegisterUserDefinedServices(this IServiceCollection services, Assembly serviceAssembly)
         {
             Type[] serviceInterfaceTypes = serviceAssembly
                 .GetTypes()
                 .Where(t => t.IsInterface)
                 .ToArray();
-
             Type[] serviceTypes = serviceAssembly
                 .GetTypes()
-                .Where(t => !t.IsInterface && !t.IsAbstract
-                && t.Name.ToLower().EndsWith("Service"))
+                .Where(t => !t.IsInterface && !t.IsAbstract &&
+                                t.Name.ToLower().EndsWith("service"))
                 .ToArray();
 
             foreach (Type serviceInterfaceType in serviceInterfaceTypes)
             {
                 Type? serviceType = serviceTypes
                     .SingleOrDefault(t => "i" + t.Name.ToLower() == serviceInterfaceType.Name.ToLower());
-
                 if (serviceType == null)
                 {
                     throw new NullReferenceException($"Service type could not be obtained for the service {serviceInterfaceType.Name}");

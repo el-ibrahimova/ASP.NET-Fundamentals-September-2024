@@ -27,8 +27,16 @@
         public async Task<TType> GetByIdAsync(TId id)
         {
             TType entity = await this.dbSet
-                .FindAsync(id);
+                               .FindAsync(id);
+            return entity;
+        }
 
+
+        // Fix ... ASAP
+        public async Task<TType> GetByIdAsync(params TId[] id)
+        {
+            TType entity = await this.dbSet
+                .FindAsync(id[0], id[1]);
             return entity;
         }
 
@@ -59,6 +67,18 @@
         public async Task AddAsync(TType item)
         {
             await this.dbSet.AddAsync(item);
+            await this.dBcontext.SaveChangesAsync();
+        }
+
+        public void AddRange(TType items)
+        {
+            this.dbSet.AddRange(items);
+            this.dBcontext.SaveChanges();
+        }
+
+        public async Task AddRangeAsync(TType[] items)
+        {
+            await this.dbSet.AddRangeAsync(items);
             await this.dBcontext.SaveChangesAsync();
         }
 

@@ -9,7 +9,7 @@ namespace CinemaApp.Services.Data
     using Interfaces;
     using Web.ViewModels.Cinema;
 
-    public class CinemaService : ICinemaService
+    public class CinemaService : BaseService, ICinemaService
     {
         private readonly IRepository<Cinema, Guid> cinemaRepository;
 

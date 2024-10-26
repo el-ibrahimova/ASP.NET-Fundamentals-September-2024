@@ -8,5 +8,10 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task <bool> AddMovieAsync(AddMovieInputModel inputModel);
 
+        Task<MovieDetailsViewModel?> GetMovieDetailsByIdAsync(Guid id);
+
+        Task<AddMovieToCinemaInputModel?> GetAddMovieToCinemaInputModelByIdAsync(Guid id);
+
+        Task <bool>AddMovieToCinemasAsync(Guid movieId, AddMovieToCinemaInputModel model);
     }
 }

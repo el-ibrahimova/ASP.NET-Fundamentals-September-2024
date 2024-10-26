@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static CinemaApp.Common.EntityValidationConstants.Cinema;
-
-namespace CinemaApp.Web.ViewModels.Cinema
+﻿namespace CinemaApp.Web.ViewModels.Cinema
 {
-    public class CinemaCheckBoxItemInputModel
+    using System.ComponentModel.DataAnnotations;
+    using static CinemaApp.Common.EntityValidationConstants.Cinema;
+    public class CinemaCheckBoxItemInputModel 
     {
         [Required]
         public string Id { get; set; } = null!;
