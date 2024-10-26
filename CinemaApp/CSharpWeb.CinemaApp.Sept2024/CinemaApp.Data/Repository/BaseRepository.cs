@@ -44,7 +44,7 @@
         }
 
         // we stay attached to the base
-        public IEnumerable<TType> GetAllAttached()
+        public IQueryable<TType> GetAllAttached()
         {
             return this.dbSet.AsQueryable();
         }

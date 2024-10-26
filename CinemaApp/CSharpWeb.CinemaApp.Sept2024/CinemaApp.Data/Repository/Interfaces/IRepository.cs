@@ -9,7 +9,7 @@
         Task<IEnumerable<TType>> GetAllAsync();
 
         // we stay attached to the base
-        IEnumerable<TType> GetAllAttached();
+        IQueryable<TType> GetAllAttached();
 
         void Add(TType item);
         Task AddAsync(TType item);
