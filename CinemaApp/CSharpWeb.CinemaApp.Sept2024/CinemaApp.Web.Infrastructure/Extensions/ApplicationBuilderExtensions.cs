@@ -16,7 +16,6 @@ namespace CinemaApp.Web.Infrastructure.Extensions
                 .ServiceProvider
                 .GetRequiredService<CinemaDbContext>()!;
 
-
             dbContext.Database.Migrate();
 
             return app;

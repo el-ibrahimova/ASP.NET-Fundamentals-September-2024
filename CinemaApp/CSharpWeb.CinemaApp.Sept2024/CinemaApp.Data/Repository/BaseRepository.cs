@@ -1,15 +1,15 @@
-﻿using CinemaApp.Data.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace CinemaApp.Data.Repository
+﻿namespace CinemaApp.Data.Repository
 {
-    public class Repository<TType, TId> : IRepository<TType, TId>
+    using Interfaces;
+    using Microsoft.EntityFrameworkCore;
+
+    public class BaseRepository<TType, TId> : IRepository<TType, TId>
     where TType : class
     {
         private readonly CinemaDbContext dBcontext;
         private readonly DbSet<TType> dbSet;
 
-        public Repository(CinemaDbContext dbContext)
+        public BaseRepository(CinemaDbContext dbContext)
         {
             this.dBcontext = dbContext;
             this.dbSet = this.dBcontext.Set<TType>();
