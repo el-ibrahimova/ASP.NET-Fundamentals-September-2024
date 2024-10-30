@@ -173,26 +173,32 @@ namespace DeskMarket.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await data.Products
-                .AsNoTracking()
-                .Where(p => p.IsDeleted == false && p.Id == id)
-                .Select(p => new DetailsViewModel()
-                {
-                    Id = p.Id,
-                    ProductName = p.ProductName,
-                    Price = p.Price,
-                    Description = p.Description,
-                    CategoryName = p.Category.Name,
-                    AddedOn = p.AddedOn.ToString(EntityDateFormat),
-                    Seller = p.Seller.UserName ?? String.Empty,
-                    HasBought = p.IsDeleted,
-                    ImageUrl = p.ImageUrl
-                }).FirstOrDefaultAsync();
+            var product = await data
+                .Products
+                .Include(p => p.ProductsClients)
+                .Include(product => product.Seller)
+                .Include(product => product.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (model == null)
+            if (product == null)
             {
                 return BadRequest();
             }
+
+            var model = new DetailsViewModel()
+            {
+                Id = product.Id,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                CategoryName = product.Category.Name,
+                AddedOn = product.AddedOn
+                    .ToString(EntityDateFormat),
+                Seller = product.Seller.UserName!,
+                HasBought = product.ProductsClients
+                    .Any(pc => pc.ClientId == GetUserId())
+            };
 
             return View(model);
         }

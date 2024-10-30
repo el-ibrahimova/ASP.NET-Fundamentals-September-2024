@@ -43,6 +43,8 @@
                         <button type="submit" class="btn btn-success w-100">Buy</button>
                     </form>
                 }
+             
+
                 @if (User?.Identity?.Name == @Model.Seller)
                 {
                     <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">Edit</a>
