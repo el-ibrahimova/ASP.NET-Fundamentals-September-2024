@@ -82,7 +82,7 @@ namespace CinemaApp.Services.Data
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(id);
 
-            MovieDetailsViewModel viewModel = null!;
+            MovieDetailsViewModel? viewModel = null!;
 
             if (movie != null)
             {
@@ -90,7 +90,6 @@ namespace CinemaApp.Services.Data
             }
 
             return viewModel;
-
         }
 
         public async Task<AddMovieToCinemaInputModel?> GetAddMovieToCinemaInputModelByIdAsync(Guid id)
@@ -127,7 +126,7 @@ namespace CinemaApp.Services.Data
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(id);
 
-            AddMovieToCinemaInputModel viewModel = null!;
+            AddMovieToCinemaInputModel? viewModel = null!;
 
             if (movie != null)
             {
@@ -251,7 +250,8 @@ namespace CinemaApp.Services.Data
                 }
 
                 CinemaMovie? cinemaMovie = await this.cinemaMovieRepository
-                    .GetByIdAsync( movieId, cinemaGuid );
+                    .FirstOrDefaultAsync(cm=>cm.MovieId== movieId
+                && cm.CinemaId==cinemaGuid );
 
 
                 if (cinemaInputModel.IsSelected)
@@ -278,7 +278,7 @@ namespace CinemaApp.Services.Data
                 }
             }
 
-            this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
+        await   this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
 
             return true;
         }

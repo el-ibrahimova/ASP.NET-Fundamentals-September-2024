@@ -1,24 +1,27 @@
 ﻿using CinemaApp.Data;
 using CinemaApp.Data.Models;
-using CinemaApp.Web.ViewModels.Watchlist;
+using CinemaApp.Services.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static CinemaApp.Common.EntityValidationConstants.Movie;
 
 namespace CinemaApp.Web.Controllers
 {
     [Authorize]
     public class WatchlistController : BaseController
     {
+        private readonly IWatchlistService watchlistService;
+
         private readonly CinemaDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public WatchlistController(CinemaDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public WatchlistController(CinemaDbContext dbContext, UserManager<ApplicationUser> userManager, 
+            IWatchlistService watchlistService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.watchlistService = watchlistService;
         }
 
         [HttpGet]
@@ -26,18 +29,25 @@ namespace CinemaApp.Web.Controllers
         {
             string userId = this.userManager.GetUserId(User)!;
 
-            IEnumerable<ApplicationUserWatchlistViewModel> watchlist = await this.dbContext.UsersMovies
-                .Include(um => um.Movie)
-                .Where(um => um.ApplicationUserId.ToString().ToLower() == userId.ToLower())
-                .Select(um => new ApplicationUserWatchlistViewModel()
-                {
-                    MovieId = um.MovieId.ToString(),
-                    Title = um.Movie.Title,
-                    Genre = um.Movie.Genre,
-                    ReleaseDate = um.Movie.ReleaseDate.ToString(ReleaseDateFormat),
-                    ImageUrl = um.Movie.ImageUrl
-                })
-                .ToListAsync();
+            //IEnumerable<ApplicationUserWatchlistViewModel> watchlist = await this.dbContext.UsersMovies
+            //    .Include(um => um.Movie)
+            //    .Where(um => um.ApplicationUserId.ToString().ToLower() == userId.ToLower())
+            //    .Select(um => new ApplicationUserWatchlistViewModel()
+            //    {
+            //        MovieId = um.MovieId.ToString(),
+            //        Title = um.Movie.Title,
+            //        Genre = um.Movie.Genre,
+            //        ReleaseDate = um.Movie.ReleaseDate.ToString(ReleaseDateFormat),
+            //        ImageUrl = um.Movie.ImageUrl
+            //    })
+            //    .ToListAsync();
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return this.RedirectToPage("/Identity/Account/Login");
+            }
+
+            var watchlist = await this.watchlistService.GetUserWatchlistByUserIdAsync(userId);
 
             return View(watchlist);
         }

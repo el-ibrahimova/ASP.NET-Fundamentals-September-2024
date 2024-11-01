@@ -1,4 +1,6 @@
-﻿namespace CinemaApp.Data.Repository
+﻿using System.Linq.Expressions;
+
+namespace CinemaApp.Data.Repository
 {
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
@@ -37,6 +39,22 @@
         {
             TType entity = await this.dbSet
                 .FindAsync(id[0], id[1]);
+            return entity;
+        }
+
+        public TType FirstOrDefault(Func<TType, bool> predicate)
+        {
+            TType entity = this.dbSet
+                .FirstOrDefault(predicate);
+
+            return entity;
+        }
+
+        public async Task<TType> FirstOrDefaultAsync(Expression<Func<TType, bool>> predicate)
+        {
+            TType entity = await this.dbSet
+                .FirstOrDefaultAsync(predicate);
+
             return entity;
         }
 
