@@ -9,5 +9,7 @@
         public string Location { get; set; } = null!;
 
         public virtual ICollection<CinemaMovie> MovieCinemas { get; set; } = new HashSet<CinemaMovie>();
+
+        public virtual ICollection<Ticket> Tickets { get; set; } = new HashSet<Ticket>();
     }
 }
