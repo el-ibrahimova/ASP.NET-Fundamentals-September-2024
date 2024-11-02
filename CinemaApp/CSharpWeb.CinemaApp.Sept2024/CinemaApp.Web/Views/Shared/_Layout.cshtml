@@ -1,4 +1,9 @@
 ﻿@using static CinemaApp.Common.ApplicationConstants
+@using CinemaApp.Services.Data.Interfaces
+@using CinemaApp.Web.Infrastructure.Extensions
+@inject IManagerService managerService;
+
+
 @{
     // check for current year and use it in the footer
     int currentYear = DateTime.UtcNow.Year;
@@ -36,15 +41,18 @@
 
                         @if (this.User?.Identity?.IsAuthenticated ?? false)
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="managerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Manager
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="managerDropdown">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Cinema" asp-action="Index"> Manage Cinemas</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Movie" asp-action="Index"> Manage Movies</a></li>
-                                </ul>
-                            </li>
+                            @if(await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="managerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Manager
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="managerDropdown">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Cinema" asp-action="Manage"> Manage Cinemas</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Movie" asp-action="Index"> Manage Movies</a></li>
+                                    </ul>
+                                </li>
+                            }
                         }
 
 

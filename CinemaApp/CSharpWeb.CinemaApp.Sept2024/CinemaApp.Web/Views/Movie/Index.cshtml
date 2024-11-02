@@ -1,11 +1,15 @@
-﻿@using CinemaApp.Web.ViewModels.Movie
+﻿@using CinemaApp.Services.Data.Interfaces
+@using CinemaApp.Web.Infrastructure.Extensions
+@using CinemaApp.Web.ViewModels.Movie
 @using static CinemaApp.Common.ErrorMessages.Watchlist
-@model IEnumerable<AllMoviesIndexViewModel>
 
-    @if (TempData[nameof(AddToWatchlistNotSuccessfullMessage)] != null)
+@model IEnumerable<AllMoviesIndexViewModel>
+@inject IManagerService managerService
+
+@if (TempData[nameof(AddToWatchlistNotSuccessfullMessage)] != null)
 {
     <div class="alert alert-danger" role="alert">
-       @TempData[nameof(AddToWatchlistNotSuccessfullMessage)]
+        @TempData[nameof(AddToWatchlistNotSuccessfullMessage)]
     </div>
 }
 
@@ -14,36 +18,40 @@
 
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th>Title</th>
-        <th>Genre</th>
-        <th>Release Date</th>
-        <th>Duration</th>
-        <th>Actions</th>
-    </tr>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Release Date</th>
+            <th>Duration</th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var movie in Model)
-    {
-        <tr>
-            <td>@movie.Title</td>
-            <td>@movie.Genre</td>
-            <td>@movie.ReleaseDate</td>
-            <td>@movie.Duration minutes</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info">Details</a>
-                <a asp-action="AddToProgram" asp-route-id="@movie.Id" class="btn btn-info">Add To Program</a>
-                
-                @if (User?.Identity?.IsAuthenticated ?? false)
-                {
-                    <form asp-controller="Watchlist" asp-action="AddToWatchlist" method="post" class="d-inline">
-                        <input type="hidden" name="movieId" value="@movie.Id" />
-                        <button type="submit" class="btn btn-warning">+Watchlist</button>
-                    </form>
-                }
-            </td>
-        </tr>
-    }
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Genre</td>
+                <td>@movie.ReleaseDate</td>
+                <td>@movie.Duration minutes</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info">Details</a>
+
+                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    {
+                        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+                        {
+                            <a asp-action="AddToProgram" asp-route-id="@movie.Id" class="btn btn-info">Add To Program</a>
+                        }
+
+                        <form asp-controller="Watchlist" asp-action="AddToWatchlist" method="post" class="d-inline">
+                            <input type="hidden" name="movieId" value="@movie.Id" />
+                            <button type="submit" class="btn btn-warning">+Watchlist</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

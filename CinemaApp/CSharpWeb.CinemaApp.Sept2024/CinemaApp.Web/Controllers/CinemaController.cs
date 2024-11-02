@@ -1,4 +1,6 @@
 ﻿using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CinemaApp.Web.Controllers
 {
@@ -8,10 +10,12 @@ namespace CinemaApp.Web.Controllers
     public class CinemaController : BaseController
     {
         private readonly ICinemaService cinemaService;
+        private readonly IManagerService managerService;
 
-        public CinemaController(ICinemaService cinemaService)
+        public CinemaController(ICinemaService cinemaService, IManagerService managerService )
         {
             this.cinemaService = cinemaService;
+            this.managerService = managerService;
         }
 
         [HttpGet]
@@ -63,6 +67,26 @@ namespace CinemaApp.Web.Controllers
             }
             
             return this.View(viewModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Manage()
+        {
+            string userId = this.User.GetUserId();
+
+            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            IEnumerable<CinemaIndexViewModel> cinemas = await this.cinemaService
+                .IndexGetAllOrderedByLocationAsync();
+
+            return this.View(cinemas);
+
         }
     }
 }
