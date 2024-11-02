@@ -9,12 +9,17 @@ namespace CinemaApp.Data.Configuration
         public void Configure(EntityTypeBuilder<Ticket> builder)
         {
             builder.HasKey(t => t.Id);
+          
             builder.Property(t => t.Price)
+                .HasColumnType("decimal(18,2)")
                 .IsRequired();
+           
             builder.Property(t => t.CinemaId)
                 .IsRequired();
+            
             builder.Property(t => t.MovieId)
                 .IsRequired();
+          
             builder.Property(t => t.UserId)
                 .IsRequired();
 
