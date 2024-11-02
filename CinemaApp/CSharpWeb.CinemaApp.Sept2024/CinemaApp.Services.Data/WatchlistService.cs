@@ -2,6 +2,7 @@
 using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Services.Mapping;
 using CinemaApp.Web.ViewModels.Watchlist;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,13 +17,13 @@ namespace CinemaApp.Services.Data
 
         public WatchlistService(IRepository<ApplicationUserMovie, object> userMovieRepository, IRepository<Movie, Guid> movieRepository)
         {
-            this.userMovieRepository = this.userMovieRepository;
+            this.userMovieRepository = userMovieRepository;
             this.movieRepository = movieRepository;
         }
 
         public async Task<IEnumerable<ApplicationUserWatchlistViewModel>> GetUserWatchlistByUserIdAsync(string userId)
         {
-           // var watchlist = await this.dbContext.UsersMovies
+            // var watchlist = await this.dbContext.UsersMovies
             //    .Include(um => um.Movie)
             //    .Where(um => um.ApplicationUserId.ToString().ToLower() == userId.ToLower())
             //    .Select(um => new ApplicationUserWatchlistViewModel()
@@ -35,18 +36,11 @@ namespace CinemaApp.Services.Data
             //    })
             //    .ToListAsync();
 
-            var watchlist = await this.userMovieRepository
+            IEnumerable<ApplicationUserWatchlistViewModel> watchlist = await this.userMovieRepository
                 .GetAllAttached()
                 .Include(um => um.Movie)
                 .Where(um => um.ApplicationUserId.ToString().ToLower() == userId.ToLower())
-                .Select(um => new ApplicationUserWatchlistViewModel()
-                {
-                    MovieId = um.MovieId.ToString(),
-                    Title = um.Movie.Title,
-                    Genre = um.Movie.Genre,
-                    ReleaseDate = um.Movie.ReleaseDate.ToString(ReleaseDateFormat),
-                    ImageUrl = um.Movie.ImageUrl
-                })
+                .To<ApplicationUserWatchlistViewModel>()
                 .ToListAsync();
 
             return watchlist;

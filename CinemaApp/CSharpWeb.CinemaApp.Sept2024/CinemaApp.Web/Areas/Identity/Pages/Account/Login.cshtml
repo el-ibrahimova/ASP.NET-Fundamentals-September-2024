@@ -1,6 +1,6 @@
 ﻿@page
 @model LoginModel
-
+﻿
 @{
     ViewData["Title"] = "Log in";
 }
@@ -31,6 +31,11 @@
                 </div>
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                </div>
+                <div>
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    </p>
                 </div>
             </form>
         </section>
