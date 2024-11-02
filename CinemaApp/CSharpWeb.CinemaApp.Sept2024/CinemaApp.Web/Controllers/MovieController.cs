@@ -83,7 +83,7 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AddToProgram(string? id)
         {
-            string userId = this.User.GetUserId();
+            string? userId = this.User.GetUserId();
 
             bool isManager = await this.managerService.IsUserManagerAsync(userId);
 
@@ -116,7 +116,7 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToProgram(AddMovieToCinemaInputModel model)
         {
-            string userId = this.User.GetUserId();
+            string? userId = this.User.GetUserId();
 
             bool isManager = await this.managerService.IsUserManagerAsync(userId);
 
@@ -147,7 +147,6 @@ namespace CinemaApp.Web.Controllers
             }
 
             return this.RedirectToAction(nameof(Index), "Cinema");
-
         }
     }
 }

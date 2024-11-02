@@ -27,15 +27,35 @@ namespace CinemaApp.Web.Controllers
             return this.View(cinemas);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            string userId = this.User.GetUserId();
+
+            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             return this.View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(AddCinemaFormModel model)
         {
+            string userId = this.User.GetUserId();
+
+            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
@@ -86,7 +106,6 @@ namespace CinemaApp.Web.Controllers
                 .IndexGetAllOrderedByLocationAsync();
 
             return this.View(cinemas);
-
         }
     }
 }
