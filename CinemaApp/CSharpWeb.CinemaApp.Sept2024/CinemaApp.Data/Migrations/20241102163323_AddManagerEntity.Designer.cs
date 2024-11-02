@@ -4,6 +4,7 @@ using CinemaApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241102163323_AddManagerEntity")]
+    partial class AddManagerEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,19 +129,19 @@ namespace CinemaApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("947658b4-8a83-4417-b50f-6198899c9620"),
+                            Id = new Guid("7150c2de-4780-4180-9e2f-b9a46c71ef43"),
                             Location = "Sofia",
                             Name = "Cinema city"
                         },
                         new
                         {
-                            Id = new Guid("75212ce7-a8ba-4714-8118-aa017dabb7ab"),
+                            Id = new Guid("b0c56d69-7f6e-496b-a5b8-da4d5198975f"),
                             Location = "Plovdiv",
                             Name = "Cinema city"
                         },
                         new
                         {
-                            Id = new Guid("c851c459-9e36-428a-9a84-214770e3ea8a"),
+                            Id = new Guid("53803bf8-1321-4ff3-a63d-653dbc6c2ff5"),
                             Location = "Varna",
                             Name = "Cinemax"
                         });
@@ -183,7 +186,7 @@ namespace CinemaApp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Managers");
+                    b.ToTable("Manager");
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.Movie", b =>
@@ -231,7 +234,7 @@ namespace CinemaApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bdd1c82f-7942-40a2-9b46-2a57da25aaad"),
+                            Id = new Guid("856aa783-817f-4038-aeb2-6f9ec8d1da1b"),
                             Description = "It follows Harry Potter, a wizard in his fourth year at Hogwarts School of Witchcraft and Wizardry, and the mystery surrounding the entry of Harry's name into the Triwizard Tournament, in which he is forced to compete.",
                             Director = "Mike Newel",
                             Duration = 157,
@@ -241,7 +244,7 @@ namespace CinemaApp.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("81cfa99e-fff3-4ca7-97e9-2a58b099bc0f"),
+                            Id = new Guid("26eac92a-fcc4-4e6b-964f-a367ff06843c"),
                             Description = "The plot of The Lord of the Rings is about the war of the peoples of the fantasy world Middle-earth against a dark lord known as Sauron.",
                             Director = "Peter Jackson",
                             Duration = 178,

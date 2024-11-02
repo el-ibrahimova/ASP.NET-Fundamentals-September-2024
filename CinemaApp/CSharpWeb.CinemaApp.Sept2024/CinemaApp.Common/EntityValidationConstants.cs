@@ -26,5 +26,11 @@
             public const int LocationMinLength = 3;
             public const int LocationMaxLength = 85;
         }
+
+        public static class Manager
+        {
+            public const int WorkPhoneNumberMaxlLength = 15;
+            public const int WorkPhoneNumberMinLength =6;
+        }
     }
 }
