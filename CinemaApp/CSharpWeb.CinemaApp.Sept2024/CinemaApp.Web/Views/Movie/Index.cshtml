@@ -39,15 +39,19 @@
 
                     @if (User?.Identity?.IsAuthenticated ?? false)
                     {
-                        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
-                        {
-                            <a asp-action="AddToProgram" asp-route-id="@movie.Id" class="btn btn-info">Add To Program</a>
-                        }
-
+                        
                         <form asp-controller="Watchlist" asp-action="AddToWatchlist" method="post" class="d-inline">
                             <input type="hidden" name="movieId" value="@movie.Id" />
                             <button type="submit" class="btn btn-warning">+Watchlist</button>
                         </form>
+                        
+                        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+                        {
+                            <a asp-action="AddToProgram" asp-route-id="@movie.Id" class="btn btn-info">Add To Program</a>
+                            <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger">Delete</a>
+                        }
+
                     }
                 </td>
             </tr>
@@ -55,4 +59,12 @@
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Add New Movie</a>
+
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+    {
+       <a asp-action="Create" class="btn btn-primary">Add New Movie</a>
+    }
+}
+

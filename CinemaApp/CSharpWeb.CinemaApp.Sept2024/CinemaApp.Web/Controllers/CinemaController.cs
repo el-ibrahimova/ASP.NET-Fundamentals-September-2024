@@ -1,4 +1,6 @@
-﻿using CinemaApp.Services.Data.Interfaces;
+﻿using System.Security.Cryptography;
+using CinemaApp.Common;
+using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
@@ -10,19 +12,18 @@ namespace CinemaApp.Web.Controllers
     public class CinemaController : BaseController
     {
         private readonly ICinemaService cinemaService;
-        private readonly IManagerService managerService;
 
-        public CinemaController(ICinemaService cinemaService, IManagerService managerService )
+        public CinemaController(ICinemaService cinemaService, IManagerService managerService)
+        :base(managerService)
         {
             this.cinemaService = cinemaService;
-            this.managerService = managerService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var cinemas = await this.cinemaService
-                .IndexGetAllOrderedByLocationAsync();
+    .IndexGetAllOrderedByLocationAsync();
 
             return this.View(cinemas);
         }
@@ -31,9 +32,7 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            string userId = this.User.GetUserId();
-
-            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isManager = await this.IsUserManagerAsync();
 
             if (!isManager)
             {
@@ -47,9 +46,7 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddCinemaFormModel model)
         {
-            string userId = this.User.GetUserId();
-
-            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isManager = await this.IsUserManagerAsync();
 
             if (!isManager)
             {
@@ -85,7 +82,7 @@ namespace CinemaApp.Web.Controllers
             {
                 return this.RedirectToAction(nameof(Index));
             }
-            
+
             return this.View(viewModel);
         }
 
@@ -93,9 +90,7 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Manage()
         {
-            string userId = this.User.GetUserId();
-
-            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isManager = await this.IsUserManagerAsync();
 
             if (!isManager)
             {
@@ -106,6 +101,56 @@ namespace CinemaApp.Web.Controllers
                 .IndexGetAllOrderedByLocationAsync();
 
             return this.View(cinemas);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                //TODO: Implement notifications for error and warning messages
+                return RedirectToAction(nameof(Index));
+            }
+
+            Guid cinemaGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref cinemaGuid);
+
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            EditCinemaFormModel? formModel = await this.cinemaService
+                .GetCinemaForEditByIdAsync(cinemaGuid);
+
+            return this.View(formModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditCinemaFormModel formModel)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(formModel);
+            }
+
+            bool isUpdated = await this.cinemaService.EditCinemaAsync(formModel);
+
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(String.Empty, "Unexpected error occurred while updating.");
+                return this.View(formModel);
+            }
+
+            return this.RedirectToAction(nameof(Details), "Cinema", new {id=formModel.Id});
         }
     }
 }

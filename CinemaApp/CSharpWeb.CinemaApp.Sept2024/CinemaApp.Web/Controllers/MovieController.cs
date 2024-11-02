@@ -1,5 +1,4 @@
 ﻿using CinemaApp.Services.Data.Interfaces;
-using CinemaApp.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CinemaApp.Web.Controllers
@@ -11,12 +10,11 @@ namespace CinemaApp.Web.Controllers
     public class MovieController : BaseController
     {
         private readonly IMovieService movieService;
-        private readonly IManagerService managerService;
 
         public MovieController(IMovieService movieService, IManagerService managerService)
+        :base(managerService)
         {
             this.movieService = movieService;
-            this.managerService = managerService;
         }
 
         [HttpGet]
@@ -30,6 +28,13 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            bool isManager = await this.IsUserManagerAsync();
+
+            if (!isManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
             return this.View();
         }
 
@@ -37,6 +42,13 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddMovieInputModel inputModel)
         {
+            bool isManager = await this.IsUserManagerAsync();
+
+            if (!isManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!this.ModelState.IsValid)
             {
                 // Render the same form with user entered values + model errors
@@ -83,16 +95,14 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AddToProgram(string? id)
         {
-            string? userId = this.User.GetUserId();
-
-            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isManager = await this.IsUserManagerAsync();
 
             if (!isManager)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            Guid movieGuid = Guid.Empty;
+           Guid movieGuid = Guid.Empty;
 
             bool isGuidValid = this.IsGuidValid(id, ref movieGuid);
             if (!isGuidValid)
@@ -116,9 +126,7 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToProgram(AddMovieToCinemaInputModel model)
         {
-            string? userId = this.User.GetUserId();
-
-            bool isManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isManager = await this.IsUserManagerAsync();
 
             if (!isManager)
             {
