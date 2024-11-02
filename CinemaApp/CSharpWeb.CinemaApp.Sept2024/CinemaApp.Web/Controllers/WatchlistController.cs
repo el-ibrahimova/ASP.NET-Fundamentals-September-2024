@@ -3,7 +3,7 @@ using CinemaApp.Services.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using static CinemaApp.Common.ErrorMessages.Watchlist;
 
 namespace CinemaApp.Web.Controllers
 {
@@ -50,7 +50,8 @@ namespace CinemaApp.Web.Controllers
 
             if (result == false)
             {
-                // TODO: Implement a way to transfer the Error Message to the View
+                TempData[nameof(AddToWatchlistNotSuccessfullMessage)] = AddToWatchlistNotSuccessfullMessage;
+                
                 return this.RedirectToAction("Index", "Movie");
             }
 

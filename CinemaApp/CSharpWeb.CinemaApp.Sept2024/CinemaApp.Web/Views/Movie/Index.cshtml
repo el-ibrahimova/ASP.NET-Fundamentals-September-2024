@@ -1,10 +1,11 @@
 ﻿@using CinemaApp.Web.ViewModels.Movie
+@using static CinemaApp.Common.ErrorMessages.Watchlist
 @model IEnumerable<AllMoviesIndexViewModel>
 
-    @if (ViewData["ErrorMessage"] != null)
+    @if (TempData[nameof(AddToWatchlistNotSuccessfullMessage)] != null)
 {
     <div class="alert alert-danger" role="alert">
-       @ViewData["ErrorMessage"]
+       @TempData[nameof(AddToWatchlistNotSuccessfullMessage)]
     </div>
 }
 

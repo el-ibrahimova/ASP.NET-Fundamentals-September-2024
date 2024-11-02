@@ -82,7 +82,7 @@ namespace CinemaApp.Services.Data
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(id);
 
-            MovieDetailsViewModel? viewModel = null!;
+            MovieDetailsViewModel? viewModel = new ();
 
             if (movie != null)
             {
@@ -278,7 +278,7 @@ namespace CinemaApp.Services.Data
                 }
             }
 
-        await   this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
+        await this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
 
             return true;
         }
