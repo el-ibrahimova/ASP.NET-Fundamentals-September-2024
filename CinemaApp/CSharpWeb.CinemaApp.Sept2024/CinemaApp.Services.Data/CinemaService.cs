@@ -124,7 +124,7 @@ namespace CinemaApp.Services.Data
 
         public async Task<bool> SoftDeleteCinemaAsync(Guid id)
         {
-            Cinema cinemaToDelete = await this.cinemaRepository
+            Cinema? cinemaToDelete = await this.cinemaRepository
                 .FirstOrDefaultAsync(c => c.Id.ToString().ToLower() == id.ToString().ToLower());
 
             if (cinemaToDelete == null)
