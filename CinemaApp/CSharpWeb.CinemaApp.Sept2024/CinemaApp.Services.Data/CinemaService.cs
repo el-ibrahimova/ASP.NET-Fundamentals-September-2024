@@ -32,6 +32,7 @@ namespace CinemaApp.Services.Data
 
             var cinemas = await this.cinemaRepository
                 .GetAllAttached()
+                .Where(c=>c.IsDeleted==false)
                 .OrderBy(c => c.Location)
                 .To<CinemaIndexViewModel>()
                 .ToArrayAsync();
@@ -63,6 +64,7 @@ namespace CinemaApp.Services.Data
                 .GetAllAttached()
                 .Include(c => c.MovieCinemas)
                 .ThenInclude(cm => cm.Movie)
+                .Where(c => c.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             CinemaDetailsViewModel? viewModel = null;
@@ -93,6 +95,7 @@ namespace CinemaApp.Services.Data
         {
             EditCinemaFormModel? cinemaModel = await this.cinemaRepository
                 .GetAllAttached()
+                .Where(c=>c.IsDeleted==false)
                 .To<EditCinemaFormModel>()
                 .FirstOrDefaultAsync(c=>c.Id.ToLower()== id.ToString().ToLower());
 
@@ -106,6 +109,31 @@ namespace CinemaApp.Services.Data
             bool result = await this.cinemaRepository.UpdateAsync(cinemaEntity);
 
             return result;
+        }
+
+        public async Task<DeleteCinemaViewModel?> GetCinemaForDeleteByIdAsync(Guid id)
+        {
+            DeleteCinemaViewModel? cinemaToDelete = await this.cinemaRepository
+                .GetAllAttached()
+                .Where(c => c.IsDeleted == false)
+                .To<DeleteCinemaViewModel>()
+                .FirstOrDefaultAsync(c => c.Id.ToString().ToLower() == id.ToString().ToLower());
+
+            return cinemaToDelete;
+        }
+
+        public async Task<bool> SoftDeleteCinemaAsync(Guid id)
+        {
+            Cinema cinemaToDelete = await this.cinemaRepository
+                .FirstOrDefaultAsync(c => c.Id.ToString().ToLower() == id.ToString().ToLower());
+
+            if (cinemaToDelete == null)
+            {
+                return false;
+            }
+
+            cinemaToDelete.IsDeleted = true;
+           return await this.cinemaRepository.UpdateAsync(cinemaToDelete);
         }
     }
 }

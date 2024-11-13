@@ -19,6 +19,10 @@ namespace CinemaApp.Data.Configuration
                 .IsRequired()
                 .HasMaxLength(LocationMaxLength);
 
+            builder.Property(c => c.IsDeleted)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             builder.HasData(this.GenerateCinemas());
         }
 
