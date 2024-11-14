@@ -9,12 +9,12 @@ namespace CinemaApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
-            builder.Property(m => m.WorkPhoneNumber)
+           builder.HasKey(m => m.Id);  
+           
+           builder.Property(m => m.WorkPhoneNumber)
                 .IsRequired()
                 .HasMaxLength(WorkPhoneNumberMaxlLength);
-
-            builder.HasKey(m => m.Id);
-
+            
             builder.Property(m => m.UserId)
                 .IsRequired();
 
