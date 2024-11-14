@@ -153,6 +153,7 @@ namespace CinemaApp.Web.Controllers
             return this.RedirectToAction(nameof(Details), "Cinema", new { id = formModel.Id });
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete(string? id)
         {
@@ -179,6 +180,7 @@ namespace CinemaApp.Web.Controllers
             return this.View(cinemaToDeleteViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> SoftDeleteConfirmed(DeleteCinemaViewModel cinema)
         {
