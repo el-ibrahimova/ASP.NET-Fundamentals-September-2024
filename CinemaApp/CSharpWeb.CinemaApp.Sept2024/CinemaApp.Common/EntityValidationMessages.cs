@@ -10,5 +10,11 @@
             public const string DirectorRequiredMessage = "Director name is required.";
             public const string DurationRequiredMessage = "Please specify movie duration.";
         }
+
+        public static class Ticket
+        {
+            public const string IncorrectPriceMessage = "Ticket price should be positive!";
+            public const string IncorrectCountMessage = "Tickets count should be positive number!";
+        }
     }
 }

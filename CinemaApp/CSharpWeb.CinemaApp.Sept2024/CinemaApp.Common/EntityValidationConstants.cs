@@ -21,7 +21,7 @@
 
         public static class Cinema
         {
-            public const int NameMinLength  = 3;
+            public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
             public const int LocationMinLength = 3;
             public const int LocationMaxLength = 85;
@@ -30,7 +30,15 @@
         public static class Manager
         {
             public const int WorkPhoneNumberMaxlLength = 15;
-            public const int WorkPhoneNumberMinLength =6;
+            public const int WorkPhoneNumberMinLength = 6;
+        }
+
+        public static class Ticket
+        {
+            public const int CountMinValue = 1;
+            public const int CountMaxValue = int.MaxValue;
+            public const string PriceMinValue = "0.01m";
+            public const string PriceMaxValue = "79228162514264337593543950335m";
         }
     }
 }
