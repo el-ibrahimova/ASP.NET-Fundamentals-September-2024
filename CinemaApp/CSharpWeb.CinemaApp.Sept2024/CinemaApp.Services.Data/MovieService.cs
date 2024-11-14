@@ -1,4 +1,5 @@
 ﻿
+using System.Runtime.CompilerServices;
 using CinemaApp.Web.ViewModels.Cinema;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -12,8 +13,9 @@ namespace CinemaApp.Services.Data
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
     using static Common.EntityValidationConstants.Movie;
+    using static Common.ApplicationConstants;
 
-    public class MovieService :BaseService, IMovieService
+    public class MovieService : BaseService, IMovieService
     {
         private readonly IRepository<Movie, Guid> movieRepository;
         private readonly IRepository<Cinema, Guid> cinemaRepository;
@@ -47,7 +49,7 @@ namespace CinemaApp.Services.Data
             {
                 return false;
             }
-            
+
             //  Movie movie = new Movie()
             // {
             //    Title = inputModel.Title,
@@ -82,7 +84,7 @@ namespace CinemaApp.Services.Data
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(id);
 
-            MovieDetailsViewModel? viewModel = new ();
+            MovieDetailsViewModel? viewModel = new();
 
             if (movie != null)
             {
@@ -130,25 +132,25 @@ namespace CinemaApp.Services.Data
 
             if (movie != null)
             {
-               viewModel = new AddMovieToCinemaInputModel()
+                viewModel = new AddMovieToCinemaInputModel()
                 {
                     Id = id.ToString(),
                     MovieTitle = movie.Title,
                     Cinemas = await this.cinemaRepository
-                        .GetAllAttached()
-                        .Include(c => c.MovieCinemas)
-                        .ThenInclude(cm => cm.Movie)
-                        .Where(c=>c.IsDeleted==false)
-                        .Select(c => new CinemaCheckBoxItemInputModel()
-                        {
-                            Id = c.Id.ToString(),
-                            Name = c.Name,
-                            Location = c.Location,
-                            IsSelected = c.MovieCinemas
-                                .Any(cm => cm.Movie.Id == id
-                                           && cm.IsDeleted == false),
-                        })
-                        .ToArrayAsync()
+                         .GetAllAttached()
+                         .Include(c => c.MovieCinemas)
+                         .ThenInclude(cm => cm.Movie)
+                         .Where(c => c.IsDeleted == false)
+                         .Select(c => new CinemaCheckBoxItemInputModel()
+                         {
+                             Id = c.Id.ToString(),
+                             Name = c.Name,
+                             Location = c.Location,
+                             IsSelected = c.MovieCinemas
+                                 .Any(cm => cm.Movie.Id == id
+                                            && cm.IsDeleted == false),
+                         })
+                         .ToArrayAsync()
                 };
             }
 
@@ -251,8 +253,8 @@ namespace CinemaApp.Services.Data
                 }
 
                 CinemaMovie? cinemaMovie = await this.cinemaMovieRepository
-                    .FirstOrDefaultAsync(cm=>cm.MovieId== movieId
-                && cm.CinemaId==cinemaGuid );
+                    .FirstOrDefaultAsync(cm => cm.MovieId == movieId
+                && cm.CinemaId == cinemaGuid);
 
 
                 if (cinemaInputModel.IsSelected)
@@ -279,9 +281,55 @@ namespace CinemaApp.Services.Data
                 }
             }
 
-        await this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
+            await this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
 
             return true;
+        }
+
+        public async Task<EditMovieViewModel?> GetEditMovieViewModelByIdAsync(Guid id)
+        {
+            // TODO: Check soft Delete
+            EditMovieViewModel? editMovieFormModel = await this.movieRepository
+                .GetAllAttached()
+                .To<EditMovieViewModel>()
+                .FirstOrDefaultAsync(m => m.Id.ToLower() == id.ToString().ToLower());
+
+            if (editMovieFormModel != null && editMovieFormModel.ImageUrl.Equals(NoImageUrl))
+            {
+                editMovieFormModel.ImageUrl = "No image";
+            }
+
+            return editMovieFormModel;
+        }
+
+        public async Task<bool> EditMovieAsync(EditMovieViewModel formModel)
+        {
+            Guid movieGuid = Guid.Empty;
+            if (!this.IsGuidValid(formModel.Id, ref movieGuid))
+            {
+                return false;
+            }
+
+            bool isReleaseDateValid = DateTime.TryParseExact(formModel.ReleaseDate, ReleaseDateFormat,
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime releaseDate);
+
+            if (!isReleaseDateValid)
+            {
+                return false;
+            }
+
+
+            Movie editedMovie = AutoMapperConfig.MapperInstance.Map<Movie>(formModel);
+            editedMovie.Id = movieGuid;
+            editedMovie.ReleaseDate = releaseDate;
+
+            if (formModel.ImageUrl ==null || formModel.ImageUrl.Equals("No image"))
+            {
+                editedMovie.ImageUrl = NoImageUrl;
+            }
+
+
+            return await this.movieRepository.UpdateAsync(editedMovie);
         }
     }
 }

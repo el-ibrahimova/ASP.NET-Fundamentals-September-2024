@@ -119,15 +119,21 @@ namespace CinemaApp.Web.Controllers
 
             if (!isIdValid)
             {
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Manage));
             }
 
             EditCinemaFormModel? formModel = await this.cinemaService
                 .GetCinemaForEditByIdAsync(cinemaGuid);
 
+            if (formModel == null)
+            {
+                return this.RedirectToAction(nameof(Manage));
+            }
+
             return this.View(formModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(EditCinemaFormModel formModel)
         {

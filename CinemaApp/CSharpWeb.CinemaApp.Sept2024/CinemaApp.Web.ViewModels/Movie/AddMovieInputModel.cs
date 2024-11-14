@@ -24,7 +24,7 @@ namespace CinemaApp.Web.ViewModels.Movie
         [MaxLength(GenreMaxLength)]
         public string Genre { get; set; } = null!;
 
-        [Required(ErrorMessage = ReleaseDateMessage)]
+        [Required(ErrorMessage = ReleaseDateRequiredMessage)]
         public string ReleaseDate { get; set; }
 
         [Range(DurationMinValue, DurationMaxValue)]

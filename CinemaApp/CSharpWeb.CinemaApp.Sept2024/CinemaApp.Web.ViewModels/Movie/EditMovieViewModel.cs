@@ -7,9 +7,10 @@ namespace CinemaApp.Web.ViewModels.Movie
     using Data.Models;
     using static Common.EntityValidationConstants.Movie;
     using static Common.EntityValidationMessages.Movie;
-    public class EditMovieViewModel : IMapFrom<Movie>, IHaveCustomMappings
+    public class EditMovieViewModel :IMapFrom<Movie>, IMapTo<Movie>, IHaveCustomMappings
     {
-        public Guid Id { get; set; }
+        [Required]
+        public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = TitleRequiredMessage)]
         [MaxLength(TitleMaxLength)]
@@ -44,6 +45,10 @@ namespace CinemaApp.Web.ViewModels.Movie
         {
             configuration.CreateMap<Movie, EditMovieViewModel>()
                 .ForMember(d => d.ReleaseDate, opt => opt.MapFrom(s => s.ReleaseDate.ToString(ReleaseDateFormat)));
+
+            configuration.CreateMap<EditMovieViewModel, Movie>()
+                .ForMember(d => d.Id, opt => opt.Ignore())
+                .ForMember(d => d.ReleaseDate, opt => opt.Ignore());
         }
     }
 }

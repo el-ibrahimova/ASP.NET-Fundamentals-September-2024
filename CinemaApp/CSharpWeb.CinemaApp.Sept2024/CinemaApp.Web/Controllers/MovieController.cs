@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CinemaApp.Web.Controllers
 {
+    using CinemaApp.Web.ViewModels.Cinema;
     using Microsoft.AspNetCore.Mvc;
     using ViewModels.Movie;
     using static Common.EntityValidationConstants.Movie;
@@ -155,6 +156,60 @@ namespace CinemaApp.Web.Controllers
             }
 
             return this.RedirectToAction(nameof(Index), "Cinema");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                //TODO: Implement notifications for error and warning messages
+                return RedirectToAction(nameof(Index));
+            }
+
+            Guid movieGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref movieGuid);
+
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            EditMovieViewModel? formModel = await this.movieService
+                .GetEditMovieViewModelByIdAsync(movieGuid);            if (formModel == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            return this.View(formModel); return this.View(formModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditMovieViewModel formModel)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(formModel);
+            }
+
+            bool isUpdated = await this.movieService.EditMovieAsync(formModel);
+
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(String.Empty, "Unexpected error occurred while updating.");
+                return this.View(formModel);
+            }
+
+            return this.RedirectToAction(nameof(Details), "Movie", new { id = formModel.Id });
         }
     }
 }
