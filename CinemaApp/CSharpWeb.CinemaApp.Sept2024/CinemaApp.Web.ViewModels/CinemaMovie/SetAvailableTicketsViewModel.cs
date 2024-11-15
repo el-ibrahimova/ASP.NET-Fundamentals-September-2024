@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
-using CinemaApp.Data.Models;
-using CinemaApp.Services.Mapping;
+﻿using CinemaApp.Services.Mapping;
+using System.ComponentModel.DataAnnotations;
 
-namespace CinemaApp.Web.ViewModels.Ticket
+namespace CinemaApp.Web.ViewModels.CinemaMovie
 {
+    using Data.Models;
     using static Common.EntityValidationConstants.CinemaMovie;
     using static Common.EntityValidationMessages.CinemaMovie;
     public class SetAvailableTicketsViewModel : IMapTo<CinemaMovie>

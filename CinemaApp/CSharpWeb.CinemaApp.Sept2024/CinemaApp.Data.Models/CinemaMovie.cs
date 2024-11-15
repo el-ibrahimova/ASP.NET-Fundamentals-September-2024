@@ -12,5 +12,7 @@ namespace CinemaApp.Data.Models
         public virtual Cinema Cinema { get; set; } = null!;
 
         public bool IsDeleted { get; set; }
+
+        public int AvailableTickets { get; set; }
     }
 }
