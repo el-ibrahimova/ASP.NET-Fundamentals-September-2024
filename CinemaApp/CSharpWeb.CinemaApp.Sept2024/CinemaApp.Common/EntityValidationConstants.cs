@@ -27,6 +27,12 @@
             public const int LocationMaxLength = 85;
         }
 
+        public static class CinemaMovie
+        {
+            public const int AvailableTicketsMinValue = 0;
+            public const int AvailableTicketsMaxValue = 10000;
+        }
+
         public static class Manager
         {
             public const int WorkPhoneNumberMaxlLength = 15;
