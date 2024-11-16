@@ -2,7 +2,9 @@
 using CinemaApp.Data;
 using CinemaApp.Data.Models;
 using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Services.Mapping;
 using CinemaApp.Web.Infrastructure.Extensions;
+using CinemaApp.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.WebApi
@@ -44,6 +46,8 @@ namespace CinemaApp.WebApi
 
 
             var app = builder.Build();
+
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
