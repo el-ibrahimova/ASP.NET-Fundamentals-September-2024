@@ -1,5 +1,8 @@
 ﻿@using CinemaApp.Web.ViewModels.Movie
+@using CinemaApp.Services.Data.Interfaces
+@using CinemaApp.Web.Infrastructure.Extensions
 @model EditMovieViewModel
+@inject IManagerService managerService
 
 <h2>Edit Movie</h2>
 
@@ -52,7 +55,16 @@
 
     <div class="form-group mt-3">
         <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+        {
+            <a asp-action="Manage" class="btn btn-secondary">Back to List</a> 
+        }
+        else
+        {
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a> 
+        }
+       
     </div>
 </form>
 

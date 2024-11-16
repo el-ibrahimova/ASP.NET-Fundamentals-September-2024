@@ -74,6 +74,7 @@ namespace CinemaApp.Services.Data
             {
                 viewModel = new CinemaDetailsViewModel()
                 {
+                    Id=cinema.Id.ToString(),
                     Name = cinema.Name,
                     Location = cinema.Location,
                     Movies = cinema
@@ -81,6 +82,8 @@ namespace CinemaApp.Services.Data
                         .Where(cm => cm.IsDeleted == false)
                         .Select(cm => new CinemaMovieViewModel()
                         {
+                            Genre = cm.Movie.Genre,
+                            Description = cm.Movie.Description,
                             Title = cm.Movie.Title,
                             Duration = cm.Movie.Duration
                         })

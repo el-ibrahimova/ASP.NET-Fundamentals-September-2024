@@ -1,5 +1,6 @@
 ﻿using CinemaApp.Services.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using NuGet.Common;
 
 namespace CinemaApp.Web.Controllers
 {
@@ -13,7 +14,7 @@ namespace CinemaApp.Web.Controllers
         private readonly IMovieService movieService;
 
         public MovieController(IMovieService movieService, IManagerService managerService)
-        :base(managerService)
+        : base(managerService)
         {
             this.movieService = movieService;
         }
@@ -35,7 +36,7 @@ namespace CinemaApp.Web.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return this.View();
         }
 
@@ -88,7 +89,7 @@ namespace CinemaApp.Web.Controllers
                 // Non-existing movie guid
                 return this.RedirectToAction(nameof(Index));
             }
-            
+
             return this.View(movie);
         }
 
@@ -103,7 +104,7 @@ namespace CinemaApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-           Guid movieGuid = Guid.Empty;
+            Guid movieGuid = Guid.Empty;
 
             bool isGuidValid = this.IsGuidValid(id, ref movieGuid);
             if (!isGuidValid)
@@ -111,7 +112,7 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
-            AddMovieToCinemaInputModel? viewModel =await this.movieService
+            AddMovieToCinemaInputModel? viewModel = await this.movieService
                 .GetAddMovieToCinemaInputModelByIdAsync(movieGuid);
 
             if (viewModel == null)
@@ -178,7 +179,7 @@ namespace CinemaApp.Web.Controllers
             }
 
             EditMovieViewModel? formModel = await this.movieService
-                .GetEditMovieViewModelByIdAsync(movieGuid);            if (formModel == null)
+                .GetEditMovieViewModelByIdAsync(movieGuid); if (formModel == null)
             {
                 return this.RedirectToAction(nameof(Index));
             }
@@ -210,6 +211,21 @@ namespace CinemaApp.Web.Controllers
             }
 
             return this.RedirectToAction(nameof(Details), "Movie", new { id = formModel.Id });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Manage()
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            IEnumerable<AllMoviesIndexViewModel> movies = await this.movieService.GetAllMoviesAsync();
+
+            return this.View(movies);
         }
     }
 }
