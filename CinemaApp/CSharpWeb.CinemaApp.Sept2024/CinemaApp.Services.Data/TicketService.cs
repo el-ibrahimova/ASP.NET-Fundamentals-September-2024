@@ -21,7 +21,7 @@ namespace CinemaApp.Services.Data
             CinemaMovie cinemaMovie = AutoMapperConfig.MapperInstance.Map<CinemaMovie>(model);
 
          
-            this.cinemaMovieRepository.UpdateAsync(cinemaMovie);
+           return this.cinemaMovieRepository.UpdateAsync(cinemaMovie);
         }
     }
 }
