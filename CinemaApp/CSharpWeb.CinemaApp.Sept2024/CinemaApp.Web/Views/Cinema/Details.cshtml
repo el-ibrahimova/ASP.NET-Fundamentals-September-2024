@@ -12,6 +12,10 @@
 <h2 class="my-4 text-center display-4">Cinema Program - @Model.Name</h2>
 <p class="text-center lead"><strong>Location:</strong> @Model.Location</p>
 
+<div id =" manageTicketsModalContainer">
+    <partial name ="_ManageTicketsModal" model="Model.Movies"/>
+</div>
+
 <div class="container mt-5">
     @if (Model.Movies.Any())
     {
@@ -53,6 +57,7 @@
     }
 </div>
 
+
 <div class="text-center mt-5">
     
     @if (await this.ManagerService.IsUserManagerAsync(this.User.GetUserId()))
@@ -63,9 +68,11 @@
     }
     else
     {
-         <a asp-action="Index" class="btn btn-secondary btn-lg px-4">
-        <i class="bi bi-arrow-left-circle"></i> Back to Cinemas
-    </a>
+        <a asp-action="Index" class="btn btn-secondary btn-lg px-4">
+            <i class="bi bi-arrow-left-circle"></i> Back to Cinemas
+        </a>
     }
    
 </div>
+
+<script src="js/manageTickets.js"> </script>

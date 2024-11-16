@@ -26,8 +26,22 @@ namespace CinemaApp.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+            // only trusted origins to make requests to our API
+            builder.Services.AddCors(cfg =>
+            {
+                cfg.AddPolicy("AllowAll", policyBld =>
+                {
+                    policyBld
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                });
+            });
+
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
+
 
             var app = builder.Build();
 
@@ -42,6 +56,7 @@ namespace CinemaApp.WebApi
 
             app.UseAuthorization();
 
+            app.UseCors("AllowAll");
 
             app.MapControllers();
 
