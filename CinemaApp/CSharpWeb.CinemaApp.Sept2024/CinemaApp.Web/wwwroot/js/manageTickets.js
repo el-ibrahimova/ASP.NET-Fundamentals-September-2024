@@ -1,6 +1,6 @@
 ﻿// TODO: Reimplement using jQuery to smooth the implementation
 function openManageTicketsModal(cinemaId) {
-    fetch(`/TicketApi/GetMoviesByCinema/${cinemaId}`)
+    fetch(`https://localhost:7067/TicketApi/GetMoviesByCinema/${cinemaId}`)
         .then(response => response.json())
         .then(movies => {
             renderMoviesInModal(movies);
@@ -12,7 +12,7 @@ function openManageTicketsModal(cinemaId) {
         });
 }
 
-function renderMoviesInModal(movies) {
+function renderMoviesInModal(viewModel) {
     let modalHtml = `
         <div id="manageTicketsModal" class="modal fade" tabindex="-1" aria-labelledby="manageTicketsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -36,14 +36,14 @@ function renderMoviesInModal(movies) {
                             </thead>
                             <tbody>`;
 
-    movies.forEach(movie => {
+    viewModel.movies.forEach(movie => {
         modalHtml += `
             <tr>
                 <td>${movie.title}</td>
                 <td>${movie.genre}</td>
                 <td>${movie.duration}</td>
                 <td><input type="number" id="availableTickets-${movie.id}" value="${movie.availableTickets}" min="0" class="form-control" /></td>
-                <td><button class="btn btn-primary" onclick="updateAvailableTickets('${movie.id}', '${movie.cinemaId}')">Update</button></td>
+                <td><button class="btn btn-primary" onclick="updateAvailableTickets('${movie.id}', '${viewModel.id}')">Update</button></td>
             </tr>`;
     });
 
@@ -64,7 +64,7 @@ function renderMoviesInModal(movies) {
 function updateAvailableTickets(movieId, cinemaId) {
     const availableTickets = document.getElementById(`availableTickets-${movieId}`).value;
 
-    fetch('/api/TicketApi/UpdateAvailableTickets', {
+    fetch('https://localhost:7067/TicketApi/UpdateAvailableTickets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

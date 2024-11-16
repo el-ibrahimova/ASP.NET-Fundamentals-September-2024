@@ -82,10 +82,12 @@ namespace CinemaApp.Services.Data
                         .Where(cm => cm.IsDeleted == false)
                         .Select(cm => new CinemaMovieViewModel()
                         {
+                            Id=cm.Movie.Id.ToString(),
                             Genre = cm.Movie.Genre,
                             Description = cm.Movie.Description,
                             Title = cm.Movie.Title,
-                            Duration = cm.Movie.Duration
+                            Duration = cm.Movie.Duration,
+                            AvailableTickets = cm.AvailableTickets
                         })
                         .ToArray()
                 };

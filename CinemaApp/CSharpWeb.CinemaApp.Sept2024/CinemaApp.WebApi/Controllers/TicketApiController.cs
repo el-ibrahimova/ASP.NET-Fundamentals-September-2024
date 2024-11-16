@@ -30,11 +30,12 @@ namespace CinemaApp.WebApi.Controllers
 
         public async Task<IActionResult> GetMoviesByCinema(string? id)
         {
-            bool isManager = await this.IsUserManagerAsync();
-            if (!isManager)
-            {
-                return this.Unauthorized();
-            }
+            // TODO: Implement WebAPI Authentication Scheme
+            //bool isManager = await this.IsUserManagerAsync();
+            //if (!isManager)
+            //{
+            //    return this.Unauthorized();
+            //}
 
             Guid cinemaGuid = Guid.Empty;
             if (!this.IsGuidValid(id, ref cinemaGuid))
@@ -60,11 +61,11 @@ namespace CinemaApp.WebApi.Controllers
 
         public async Task<IActionResult> UpdateAvailableTickets([FromForm]SetAvailableTicketsViewModel model)
         {
-            bool isManager = await this.IsUserManagerAsync();
-            if (!isManager)
-            {
-                return this.Unauthorized();
-            }
+            //bool isManager = await this.IsUserManagerAsync();
+            //if (!isManager)
+            //{
+            //    return this.Unauthorized();
+            //}
 
             if (!ModelState.IsValid)
             {
