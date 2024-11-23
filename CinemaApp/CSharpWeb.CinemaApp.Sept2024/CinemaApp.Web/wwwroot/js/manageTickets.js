@@ -1,6 +1,9 @@
 ﻿// TODO: Reimplement using jQuery to smooth the implementation
 function openManageTicketsModal(cinemaId) {
-    fetch(`https://localhost:7067/TicketApi/GetMoviesByCinema/${cinemaId}`)
+    fetch(`https://localhost:7081/TicketApi/GetMoviesByCinema/${cinemaId}`, {
+        method: 'GET',
+        credentials: 'include'
+    })
         .then(response => response.json())
         .then(movies => {
             renderMoviesInModal(movies);
@@ -64,8 +67,9 @@ function renderMoviesInModal(viewModel) {
 function updateAvailableTickets(movieId, cinemaId) {
     const availableTickets = document.getElementById(`availableTickets-${movieId}`).value;
 
-    fetch('https://localhost:7067/TicketApi/UpdateAvailableTickets', {
+    fetch('https://localhost:7081/TicketApi/UpdateAvailableTickets', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             CinemaId: cinemaId,
@@ -80,5 +84,29 @@ function updateAvailableTickets(movieId, cinemaId) {
         .catch(error => {
             console.error("Error:", error);
             alert("An error occurred while updating tickets.");
+        });
+}
+
+function buyTicketsModal(cinemaId, movieId) {
+    fetch(`https://localhost:7081/TicketApi/GetTicketsAvailability`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            CinemaId: cinemaId,
+            MovieId: movieId
+        })
+    })
+        .then(response => response.json())
+        .then(viewModel => {
+            $("#CinemaId").val(viewModel.cinemaId);
+            $("#MovieId").val(viewModel.movieId);
+            $("#Quantity").prop("min", "1");
+            $("#Quantity").prop("max", `${viewModel.availableTickets}`);
+            $("#AvailableTickets").val(viewModel.availableTickets);
+            $('#buyTicketModal').modal('show');
+        })
+        .catch(error => {
+            console.error("Error loading movies:", error);
+            alert("An error occurred while loading movies.");
         });
 }

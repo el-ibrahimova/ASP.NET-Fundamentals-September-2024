@@ -16,6 +16,7 @@ namespace CinemaApp.Services.Data
         {
             this.cinemaMovieRepository = this.cinemaMovieRepository;
         }
+
         public Task<bool> SetAvailableTicketsAsync(SetAvailableTicketsViewModel model)
         {
             CinemaMovie cinemaMovie = AutoMapperConfig.MapperInstance.Map<CinemaMovie>(model);

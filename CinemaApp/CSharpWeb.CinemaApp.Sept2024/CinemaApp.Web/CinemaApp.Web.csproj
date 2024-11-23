@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
@@ -23,7 +23,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,9 +33,11 @@
     <ProjectReference Include="..\CinemaApp.Services.Mapping\CinemaApp.Services.Mapping.csproj" />
     <ProjectReference Include="..\CinemaApp.Web.Infrastructure\CinemaApp.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\CinemaApp.Web.ViewModels\CinemaApp.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\CinemaApp.WebApi\CinemaApp.WebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Ticket\" />
   </ItemGroup>
 

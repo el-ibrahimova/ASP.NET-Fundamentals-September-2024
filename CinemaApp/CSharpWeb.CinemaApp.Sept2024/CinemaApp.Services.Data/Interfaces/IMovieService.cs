@@ -1,4 +1,5 @@
-﻿using CinemaApp.Web.ViewModels.Movie;
+﻿using CinemaApp.Web.ViewModels.CinemaMovie;
+using CinemaApp.Web.ViewModels.Movie;
 
 namespace CinemaApp.Services.Data.Interfaces
 {
@@ -17,5 +18,6 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<EditMovieViewModel?> GetEditMovieViewModelByIdAsync(Guid id);
 
         Task<bool> EditMovieAsync(EditMovieViewModel formModel);
+        Task<AvailableTicketsViewModel?> GetAvailableTicketsByIdAsync(Guid cinemaId, Guid movieId);
     }
 }

@@ -1,9 +1,8 @@
-﻿@using CinemaApp.Web.ViewModels.Cinema
-@using CinemaApp.Services.Data.Interfaces
+﻿@using CinemaApp.Services.Data.Interfaces
 @using CinemaApp.Web.Infrastructure.Extensions
-@model CinemaDetailsViewModel
+@model CinemaApp.Web.ViewModels.Cinema.CinemaDetailsViewModel
 
-@inject IManagerService ManagerService
+@inject IManagerService managerService
 
 @{
     ViewData["Title"] = "Cinema Program";
@@ -12,8 +11,11 @@
 <h2 class="my-4 text-center display-4">Cinema Program - @Model.Name</h2>
 <p class="text-center lead"><strong>Location:</strong> @Model.Location</p>
 
-<div id =" manageTicketsModalContainer">
-    <partial name ="_ManageTicketsModal" model="Model.Movies"/>
+<div id="manageTicketsModalContainer">
+    <partial name="_ManageTicketsModal" model="Model.Movies" />
+</div>
+<div id="buyTicketsModalContainer">
+    <partial name="_BuyTicketsModal" model="null" />
 </div>
 
 <div class="container mt-5">
@@ -31,20 +33,18 @@
                             <p class="card-text text-justify" style="font-size: 0.9rem;">@movie.Description</p>
                         </div>
                         <div class="card-footer bg-transparent text-center">
-                            
-                            @if (await this.ManagerService.IsUserManagerAsync(this.User.GetUserId()))
+                            @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
                             {
                                 <button type="button" class="btn btn-primary btn-sm" onclick="openManageTicketsModal('@Model.Id')">
-                                <i class="bi bi-ticket-perforated"></i> Manage Tickets
-                            </button>  
+                                    <i class="bi bi-ticket-perforated"></i> Manage Tickets
+                                </button>
                             }
                             else
                             {
-                                <button type="button" class="btn btn-success btn-sm" onclick="buyTicketsModal('@Model.Id')">
+                                <button type="button" class="btn btn-success btn-sm" onclick="buyTicketsModal('@Model.Id', '@movie.Id')">
                                     <i class="bi bi-ticket-perforated"></i> Buy Tickets
-                                </button> 
+                                </button>
                             }
-                          
                         </div>
                     </div>
                 </div>
@@ -57,10 +57,8 @@
     }
 </div>
 
-
 <div class="text-center mt-5">
-    
-    @if (await this.ManagerService.IsUserManagerAsync(this.User.GetUserId()))
+    @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
     {
         <a asp-action="Manage" class="btn btn-secondary btn-lg px-4">
             <i class="bi bi-arrow-left-circle"></i> Back to Cinemas
@@ -72,7 +70,6 @@
             <i class="bi bi-arrow-left-circle"></i> Back to Cinemas
         </a>
     }
-   
 </div>
 
-<script src="~/js/manageTickets.js"> </script>
+<script src="~/js/manageTickets.js"></script>

@@ -1,6 +1,7 @@
 ﻿
 using System.Runtime.CompilerServices;
 using CinemaApp.Web.ViewModels.Cinema;
+using CinemaApp.Web.ViewModels.CinemaMovie;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CinemaApp.Services.Data
@@ -50,22 +51,7 @@ namespace CinemaApp.Services.Data
                 return false;
             }
 
-            //  Movie movie = new Movie()
-            // {
-            //    Title = inputModel.Title,
-            //    Genre = inputModel.Genre,
-            //    ReleaseDate = releaseDate,
-            //    Director = inputModel.Director,
-            //    Duration = inputModel.Duration,
-            //    Description = inputModel.Description,
-            //    ImageUrl = inputModel.ImageUrl
-            //};
-
-            //await this.dbContext.Movies.AddAsync(movie);
-            //await this.dbContext.SaveChangesAsync();
-
-
-            Movie movie = new Movie();
+           Movie movie = new Movie();
 
             AutoMapperConfig.MapperInstance.Map(inputModel, movie);
             movie.ReleaseDate = releaseDate;
@@ -77,10 +63,6 @@ namespace CinemaApp.Services.Data
 
         public async Task<MovieDetailsViewModel?> GetMovieDetailsByIdAsync(Guid id)
         {
-            //Movie? movie = await this.dbContext
-            //    .Movies
-            //    .FirstOrDefaultAsync(m => m.Id == movieGuid);
-
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(id);
 
@@ -96,35 +78,6 @@ namespace CinemaApp.Services.Data
 
         public async Task<AddMovieToCinemaInputModel?> GetAddMovieToCinemaInputModelByIdAsync(Guid id)
         {
-            //Movie? movie = await this.dbContext
-            //    .Movies
-            //    .FirstOrDefaultAsync(m => m.Id == movieGuid);
-
-            //if (movie == null)
-            //{
-            //    return this.RedirectToAction(nameof(Index));
-            //}
-
-            //AddMovieToCinemaInputModel viewModel = new AddMovieToCinemaInputModel()
-            //{
-            //    Id = id!,
-            //    MovieTitle = movie.Title,
-            //    Cinemas = await this.dbContext
-            //        .Cinemas
-            //        .Include(c => c.MovieCinemas)
-            //        .ThenInclude(cm => cm.Movie)
-            //        .Select(c => new CinemaCheckBoxItemInputModel()
-            //        {
-            //            Id = c.Id.ToString(),
-            //            Name = c.Name,
-            //            Location = c.Location,
-            //            IsSelected = c.MovieCinemas
-            //                .Any(cm => cm.Movie.Id == movieGuid
-            //                           && cm.IsDeleted == false),
-            //        })
-            //        .ToArrayAsync()
-            //};
-
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(id);
 
@@ -159,71 +112,6 @@ namespace CinemaApp.Services.Data
 
         public async Task<bool> AddMovieToCinemasAsync(Guid movieId, AddMovieToCinemaInputModel model)
         {
-            //Movie? movie = await this.dbContext
-            //    .Movies
-            //    .FirstOrDefaultAsync(m => m.Id == movieGuid);
-
-            //if (movie == null)
-            //{
-            //    return this.RedirectToAction(nameof(Index));
-            //}
-
-            //ICollection<CinemaMovie> entitiesToAdd = new List<CinemaMovie>();
-
-            //foreach (CinemaCheckBoxItemInputModel cinemaInputModel in model.Cinemas)
-            //{
-            //    Guid cinemaGuid = Guid.Empty;
-            //    bool isCinemaGuidValid = this.IsGuidValid(cinemaInputModel.Id, ref cinemaGuid);
-
-            //    if (!isCinemaGuidValid)
-            //    {
-            //        this.ModelState.AddModelError(String.Empty, "Invalid cinema selected!");
-            //        return this.View(model);
-            //    }
-
-            //    Cinema? cinema = await this.dbContext
-            //        .Cinemas
-            //        .FirstOrDefaultAsync(c => c.Id == cinemaGuid);
-
-            //    if (cinema == null)
-            //    {
-            //        this.ModelState.AddModelError(String.Empty, "Invalid cinema selected!");
-            //        return this.View(model);
-            //    }
-
-            //    CinemaMovie? cinemaMovie = await this.dbContext
-            //        .CinemaMovies
-            //        .FirstOrDefaultAsync(cm => cm.MovieId == movieGuid && cm.CinemaId == cinemaGuid);
-
-            //    if (cinemaInputModel.IsSelected)
-            //    {
-            //        if (cinemaMovie == null)
-            //        {
-            //            entitiesToAdd.Add(new CinemaMovie()
-            //            {
-            //                Cinema = cinema,
-            //                Movie = movie
-            //            });
-            //        }
-            //        else
-            //        {
-            //            cinemaMovie.IsDeleted = false;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (cinemaMovie != null)
-            //        {
-            //            cinemaMovie.IsDeleted = true;
-            //        }
-            //    }
-
-            //    await this.dbContext.SaveChangesAsync();
-            //}
-
-            //await this.dbContext.CinemaMovies.AddRangeAsync(entitiesToAdd);
-            //await this.dbContext.SaveChangesAsync();
-
             Movie? movie = await this.movieRepository
                 .GetByIdAsync(movieId);
 
@@ -330,6 +218,27 @@ namespace CinemaApp.Services.Data
 
 
             return await this.movieRepository.UpdateAsync(editedMovie);
+        }
+
+        public async Task<AvailableTicketsViewModel?> GetAvailableTicketsByIdAsync(Guid cinemaId, Guid movieId)
+        {
+            CinemaMovie? cinemaMovie = await this.cinemaMovieRepository
+                .FirstOrDefaultAsync(cm => cm.MovieId == movieId &&
+                                           cm.CinemaId == cinemaId);
+
+            AvailableTicketsViewModel availableTicketsViewModel = null;
+            if (cinemaMovie != null)
+            {
+                availableTicketsViewModel = new AvailableTicketsViewModel()
+                {
+                    CinemaId = cinemaId.ToString(),
+                    MovieId = movieId.ToString(),
+                    Quantity = 0,
+                    AvailableTickets = cinemaMovie.AvailableTickets
+                };
+            }
+
+            return availableTicketsViewModel;
         }
     }
 }

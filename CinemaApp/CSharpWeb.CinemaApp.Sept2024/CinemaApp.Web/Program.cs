@@ -1,13 +1,12 @@
-using CinemaApp.Services.Data;
-using CinemaApp.Services.Data.Interfaces;
-
 namespace CinemaApp.Web
 {
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
     using Data;
     using Data.Models;
     using Infrastructure.Extensions;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
+    using Services.Data.Interfaces;
     using Services.Mapping;
     using ViewModels;
 
@@ -16,16 +15,20 @@ namespace CinemaApp.Web
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            string connectionString = builder.Configuration.GetConnectionString("SQLServer");
+            string connectionString = builder.Configuration.GetConnectionString("SQLServer")!;
+            string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
+            string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
+            string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
 
             // Add services to the container.
-            builder.Services.AddDbContext<CinemaDbContext>(options =>
-            {
-                // OnConfiguration Method
-                options.UseSqlServer(connectionString);
-            });
+            builder.Services
+                .AddDbContext<CinemaDbContext>(options =>
+                {
+                    options.UseSqlServer(connectionString);
+                });
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(cfg =>
+            builder.Services
+                .AddIdentity<ApplicationUser, IdentityRole<Guid>>(cfg =>
                 {
                     ConfigureIdentity(builder, cfg);
                 })
@@ -39,7 +42,6 @@ namespace CinemaApp.Web
                 cfg.LoginPath = "/Identity/Account/Login";
             });
 
-
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
 
@@ -48,47 +50,66 @@ namespace CinemaApp.Web
 
             WebApplication app = builder.Build();
 
-            // optionally - just copy the code from this project to use it in another
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // this is forbidden for production, because it return what type is the error and client should not be able to see that  
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection(); // enable HTTPS for the application
-            app.UseStaticFiles(); // load files from directory wwwroot - img, css, js, ico
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-            app.UseRouting(); // enable default routing - Url
+            app.UseRouting();
 
-            app.UseAuthentication(); // First -> Who am I
-            app.UseAuthorization(); // Second -> What can I do
+            // Authorization can work only if we know who uses the application -> We need Authentication
+            app.UseAuthentication(); // First -> Who am I?
+            app.UseAuthorization(); // Second -> What can I do?
 
+            app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
+
+            app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
+
+            app.MapControllerRoute(
+                name: "Areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "Errors",
+                pattern: "{controller=Home}/{action=Index}/{statusCode?}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.MapRazorPages();  // add routing to Identity Razor pages
+            app.MapRazorPages(); // Add routing to Identity Razor Pages
 
             app.ApplyMigrations();
+
             app.Run();
         }
 
         private static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg)
         {
-            cfg.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
+            cfg.Password.RequireDigit =
+                builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
             cfg.Password.RequireLowercase =
                 builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
-            cfg.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
-            cfg.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
-            cfg.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
+            cfg.Password.RequireUppercase =
+                builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+            cfg.Password.RequireNonAlphanumeric =
+                builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumerical");
+            cfg.Password.RequiredLength =
+                builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
+            cfg.Password.RequiredUniqueChars =
+                builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueCharacters");
 
-            cfg.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
-            cfg.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
-            cfg.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
+            cfg.SignIn.RequireConfirmedAccount =
+                builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+            cfg.SignIn.RequireConfirmedEmail =
+                builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
+            cfg.SignIn.RequireConfirmedPhoneNumber =
+                builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
 
             cfg.User.RequireUniqueEmail =
                 builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");

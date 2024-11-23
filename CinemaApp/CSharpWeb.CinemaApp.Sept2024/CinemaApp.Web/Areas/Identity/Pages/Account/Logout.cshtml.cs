@@ -2,13 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using CinemaApp.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace CinemaApp.Web.Areas.Identity.Pages.Account
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.Extensions.Logging;
+
+    using Data.Models;
+
+    using static Common.ApplicationConstants;
+
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -23,6 +29,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+            this.RemoveManagerCookie();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
@@ -34,6 +41,11 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
                 // request and the identity for the user gets updated.
                 return RedirectToPage();
             }
+        }
+
+        private void RemoveManagerCookie()
+        {
+            this.HttpContext.Response.Cookies.Delete(IsManagerCookieName);
         }
     }
 }

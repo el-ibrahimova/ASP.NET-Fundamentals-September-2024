@@ -6,6 +6,5 @@
         public string WorkPhoneNumber { get; set; } = null!;
         public Guid UserId { get; set; }
         public virtual ApplicationUser User { get; set; } = null!;
-
     }
 }

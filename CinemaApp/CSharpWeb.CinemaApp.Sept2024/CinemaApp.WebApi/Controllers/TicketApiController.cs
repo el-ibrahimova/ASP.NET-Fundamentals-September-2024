@@ -1,50 +1,46 @@
-﻿using CinemaApp.Services.Data.Interfaces;
-using CinemaApp.Web.Infrastructure.Extensions;
-using CinemaApp.Web.ViewModels.Cinema;
-using CinemaApp.Web.ViewModels.CinemaMovie;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CinemaApp.WebApi.Controllers
+﻿namespace CinemaApp.WebApi.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
+    using Services.Data.Interfaces;
+    using Web.Infrastructure.Attributes;
+    using Web.ViewModels.Cinema;
+    using Web.ViewModels.CinemaMovie;
+    using Web.ViewModels.Ticket;
+
     [ApiController]
     [Route("[controller]/")]
     public class TicketApiController : ControllerBase
     {
-        private readonly IManagerService managerService;
         private readonly ICinemaService cinemaService;
         private readonly ITicketService ticketService;
+        private readonly IMovieService movieService;
 
-        public TicketApiController(IManagerService managerService, ICinemaService cinemaService, ITicketService ticketService)
+        public TicketApiController(ICinemaService cinemaService,
+            ITicketService ticketService, IMovieService movieService)
         {
-            this.managerService = managerService;
             this.cinemaService = cinemaService;
             this.ticketService = ticketService;
+            this.movieService = movieService;
         }
 
         [HttpGet("[action]/{id?}")]
-        [ProducesResponseType(typeof(CinemaDetailsViewModel),StatusCodes.Status200OK)]
+        [ManagerOnly]
+        [ProducesResponseType(typeof(CinemaDetailsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public async Task<IActionResult> GetMoviesByCinema(string? id)
         {
-            // TODO: Implement WebAPI Authentication Scheme
-            //bool isManager = await this.IsUserManagerAsync();
-            //if (!isManager)
-            //{
-            //    return this.Unauthorized();
-            //}
-
             Guid cinemaGuid = Guid.Empty;
             if (!this.IsGuidValid(id, ref cinemaGuid))
             {
                 return this.BadRequest();
             }
 
-            CinemaDetailsViewModel? viewModel = await this.cinemaService.GetCinemaDetailsByIdAsync(cinemaGuid);
-
+            CinemaDetailsViewModel? viewModel = await this.cinemaService
+                .GetCinemaDetailsByIdAsync(cinemaGuid);
             if (viewModel == null)
             {
                 return this.NotFound();
@@ -54,25 +50,19 @@ namespace CinemaApp.WebApi.Controllers
         }
 
         [HttpPost("[action]")]
+        [ManagerOnly]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
-        public async Task<IActionResult> UpdateAvailableTickets([FromForm]SetAvailableTicketsViewModel model)
+        public async Task<IActionResult> UpdateAvailableTickets([FromBody] SetAvailableTicketsViewModel model)
         {
-            //bool isManager = await this.IsUserManagerAsync();
-            //if (!isManager)
-            //{
-            //    return this.Unauthorized();
-            //}
-
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
-            bool isSuccess =await this.ticketService.SetAvailableTicketsAsync(model);
+            bool isSuccess = await this.ticketService.SetAvailableTicketsAsync(model);
             if (!isSuccess)
             {
                 return this.BadRequest();
@@ -81,32 +71,50 @@ namespace CinemaApp.WebApi.Controllers
             return this.Ok("Ticket availability updated successfully!");
         }
 
+        [HttpPost("[action]")]
+        [ProducesResponseType(typeof(AvailableTicketsViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetTicketsAvailability([FromBody] GetAvailableTicketsFormModel buyTicketsModel)
+        {
+            Guid cinemaGuid = Guid.Empty;
+            if (!this.IsGuidValid(buyTicketsModel.CinemaId, ref cinemaGuid))
+            {
+                return this.BadRequest();
+            }
+
+            Guid movieGuid = Guid.Empty;
+            if (!this.IsGuidValid(buyTicketsModel.MovieId, ref movieGuid))
+            {
+                return this.BadRequest();
+            }
+
+            AvailableTicketsViewModel? availableTicketsViewModel = await this.movieService
+                .GetAvailableTicketsByIdAsync(cinemaGuid, movieGuid);
+            if (availableTicketsViewModel == null)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Ok(availableTicketsViewModel);
+        }
+
         protected bool IsGuidValid(string? id, ref Guid parsedGuid)
         {
-            // non-existing parameter in the URL
+            // Non-existing parameter in the URL
             if (String.IsNullOrWhiteSpace(id))
             {
                 return false;
             }
 
-            // invalid parameter in the URL
+            // Invalid parameter in the URL
             bool isGuidValid = Guid.TryParse(id, out parsedGuid);
-
             if (!isGuidValid)
             {
                 return false;
             }
 
             return true;
-        }
-
-        private async Task<bool> IsUserManagerAsync()
-        {
-            string? userId = this.User.GetUserId();
-
-            bool isManager = await this.managerService.IsUserManagerAsync(userId);
-
-            return isManager;
         }
     }
 }
