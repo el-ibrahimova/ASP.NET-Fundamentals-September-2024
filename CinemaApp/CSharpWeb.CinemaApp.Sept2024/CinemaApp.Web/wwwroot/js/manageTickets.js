@@ -88,7 +88,7 @@ function updateAvailableTickets(movieId, cinemaId) {
 }
 
 function buyTicketsModal(cinemaId, movieId) {
-    fetch(`https://localhost:7081/TicketApi/GetTicketsAvailability`, {
+    fetch(`https://localhost:7067/TicketApi/GetTicketsAvailability`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
