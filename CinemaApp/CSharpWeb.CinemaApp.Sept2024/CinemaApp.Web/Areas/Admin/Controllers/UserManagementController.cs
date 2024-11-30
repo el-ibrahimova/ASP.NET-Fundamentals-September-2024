@@ -89,23 +89,21 @@ namespace CinemaApp.Web.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteUser(string userId)
         {
             Guid userGuid = Guid.Empty;
-            if (this.IsGuidValid(userId, ref userGuid))
+            if (!this.IsGuidValid(userId, ref userGuid))
             {
                 return this.RedirectToAction(nameof(Index));
             }
 
-            bool userExist = await this.userService
+            bool userExists = await this.userService
                 .UserExistByIdAsync(userGuid);
-
-            if (!userExist)
+            if (!userExists)
             {
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index));
             }
 
-            bool deleteResult = await this.userService
+            bool removeResult = await this.userService
                 .DeleteUserAsync(userGuid);
-
-            if (!deleteResult)
+            if (!removeResult)
             {
                 return this.RedirectToAction(nameof(Index));
             }
