@@ -1,3 +1,5 @@
+using CinemaApp.Data.Seeding.DataTransferObjects;
+
 namespace CinemaApp.Web
 {
     using Microsoft.AspNetCore.Identity;
@@ -19,7 +21,7 @@ namespace CinemaApp.Web
             string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
             string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
             string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
-            string jsonPath = builder.Configuration.GetValue<string>("Seed:MoviesJson")!;
+            string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, builder.Configuration.GetValue<string>("Seed:MoviesJson")!);
 
             // Add services to the container.
             builder.Services
@@ -51,7 +53,7 @@ namespace CinemaApp.Web
 
             WebApplication app = builder.Build();
 
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly,typeof(ImportMovieDto).Assembly);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

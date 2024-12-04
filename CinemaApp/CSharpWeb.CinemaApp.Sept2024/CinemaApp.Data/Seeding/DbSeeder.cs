@@ -6,7 +6,6 @@ using CinemaApp.Data.Seeding.DataTransferObjects;
 using CinemaApp.Services.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CinemaApp.Data.Seeding
@@ -18,13 +17,12 @@ namespace CinemaApp.Data.Seeding
             await using CinemaDbContext dbContext = services
                 .GetRequiredService<CinemaDbContext>();
 
-            ILogger logger = services.GetRequiredService<ILogger>();
 
             ICollection<Movie> allMovies = await dbContext.Movies.ToArrayAsync();
 
             try
             {
-                string jsonInput = await File.ReadAllTextAsync(jsonPath, Encoding.Unicode, CancellationToken.None);
+                string jsonInput = await File.ReadAllTextAsync(jsonPath, Encoding.ASCII, CancellationToken.None);
 
                 ImportMovieDto[] movieDtos = JsonConvert.DeserializeObject<ImportMovieDto[]>(jsonInput);
 
@@ -65,7 +63,7 @@ namespace CinemaApp.Data.Seeding
             }
             catch (Exception e)
             {
-                logger.LogError("Error occurred while seeding the movies in the database.");
+                Console.WriteLine("Error occurred while seeding the movies in the database.");
                 
             }
         }
