@@ -12,11 +12,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CinemaApp.Common\CinemaApp.Common.csproj" />
     <ProjectReference Include="..\CinemaApp.Data.Models\CinemaApp.Data.Models.csproj" />
+    <ProjectReference Include="..\CinemaApp.Services.Mapping\CinemaApp.Services.Mapping.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Seeding\Data\" />
   </ItemGroup>
 
 </Project>

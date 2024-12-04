@@ -19,6 +19,7 @@ namespace CinemaApp.Web
             string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
             string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
             string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
+            string jsonPath = builder.Configuration.GetValue<string>("Seed:MoviesJson")!;
 
             // Add services to the container.
             builder.Services
@@ -71,8 +72,12 @@ namespace CinemaApp.Web
 
             app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
-            app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
-
+            if (app.Environment.IsDevelopment())
+            {
+                app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
+                app.SeedMovies(jsonPath);
+            }
+            
             app.MapControllerRoute(
                 name: "Areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

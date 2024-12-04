@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using CinemaApp.Data.Models;
+using CinemaApp.Data.Seeding;
 
 namespace CinemaApp.Web.Infrastructure.Extensions
 {
@@ -16,7 +17,7 @@ namespace CinemaApp.Web.Infrastructure.Extensions
         // automating apply migrations
         public static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app)
         {
-            using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
+            using IServiceScope serviceScope = app.ApplicationServices.CreateAsyncScope();
 
             CinemaDbContext dbContext = serviceScope
                 .ServiceProvider
@@ -125,6 +126,21 @@ namespace CinemaApp.Web.Infrastructure.Extensions
             }
 
             return applicationUser;
+        }
+
+        public static IApplicationBuilder SeedMovies(this IApplicationBuilder app, string jsonPath)
+        {
+            using IServiceScope serviceScope = app.ApplicationServices.CreateAsyncScope();
+            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+
+            Task.Run(async () =>
+                {
+                   await DbSeeder.SeedMoviesAsync(serviceProvider, jsonPath);
+                })
+                .GetAwaiter()
+                .GetResult();
+
+            return app;
         }
     }
 }
