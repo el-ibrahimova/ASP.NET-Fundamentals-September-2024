@@ -38,13 +38,13 @@ namespace CinemaApp.Services.Data
             if (!String.IsNullOrWhiteSpace(inputModel.SearchQuery))
             {
                 allMoviesQuery = allMoviesQuery.Where(m =>
-                    m.Title.ToLowerInvariant().Contains(inputModel.SearchQuery.ToLowerInvariant()));
+                    m.Title.ToLower().Contains(inputModel.SearchQuery.ToLower()));
             }
 
             if (!String.IsNullOrWhiteSpace(inputModel.GenreFilter))
             {
                 allMoviesQuery = allMoviesQuery.Where(m =>
-                    m.Genre.ToLowerInvariant() == inputModel.GenreFilter.ToLowerInvariant());
+                    m.Genre.ToLower() == inputModel.GenreFilter.ToLower());
             }
 
             if (!String.IsNullOrWhiteSpace(inputModel.YearFilter))
@@ -70,6 +70,9 @@ namespace CinemaApp.Services.Data
                 }
             }
 
+            return await allMoviesQuery
+                .To<AllMoviesIndexViewModel>()
+                .ToArrayAsync();
         }
 
         public async Task<bool> AddMovieAsync(AddMovieInputModel inputModel)

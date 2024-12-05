@@ -22,7 +22,7 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(AllMoviesSearchFilterViewModel inputModel)
         {
-            IEnumerable<AllMoviesIndexViewModel> allMovies = await this.movieService.GetAllMoviesAsync();
+            IEnumerable<AllMoviesIndexViewModel> allMovies = await this.movieService.GetAllMoviesAsync(inputModel);
            
             AllMoviesSearchFilterViewModel viewModel = new AllMoviesSearchFilterViewModel();
 
@@ -228,8 +228,10 @@ namespace CinemaApp.Web.Controllers
             {
                 return this.RedirectToAction(nameof(Index));
             }
+            
+            //TODO: Implement the same filtering, search and pagination here
 
-            IEnumerable<AllMoviesIndexViewModel> movies = await this.movieService.GetAllMoviesAsync();
+            IEnumerable<AllMoviesIndexViewModel> movies = await this.movieService.GetAllMoviesAsync(new AllMoviesSearchFilterViewModel());
 
             return this.View(movies);
         }
