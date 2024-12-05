@@ -19,5 +19,7 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task<bool> EditMovieAsync(EditMovieViewModel formModel);
         Task<AvailableTicketsViewModel?> GetAvailableTicketsByIdAsync(Guid cinemaId, Guid movieId);
+
+        Task<IEnumerable<string>> GetAllGenresAsync();
     }
 }

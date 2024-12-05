@@ -22,8 +22,14 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var allMovies = await this.movieService.GetAllMoviesAsync();
-            return this.View(allMovies);
+            IEnumerable<AllMoviesIndexViewModel> allMovies = await this.movieService.GetAllMoviesAsync();
+           
+            AllMoviesSearchFilterViewModel viewModel = new AllMoviesSearchFilterViewModel();
+
+            viewModel.AllGenres = await this.movieService.GetAllGenresAsync();
+            viewModel.Movies = allMovies;
+        
+            return this.View(viewModel);
         }
 
         [Authorize]

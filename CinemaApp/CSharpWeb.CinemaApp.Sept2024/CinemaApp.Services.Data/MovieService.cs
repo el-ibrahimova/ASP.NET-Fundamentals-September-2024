@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using System.Runtime.CompilerServices;
 using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.CinemaMovie;
@@ -239,6 +240,17 @@ namespace CinemaApp.Services.Data
             }
 
             return availableTicketsViewModel;
+        }
+
+        public async Task<IEnumerable<string>> GetAllGenresAsync()
+        {
+            IEnumerable<string> allGenres =await this.movieRepository
+                .GetAllAttached()
+                .Select(m => m.Genre)
+                .Distinct()
+                .ToArrayAsync();
+
+            return allGenres;
         }
     }
 }
