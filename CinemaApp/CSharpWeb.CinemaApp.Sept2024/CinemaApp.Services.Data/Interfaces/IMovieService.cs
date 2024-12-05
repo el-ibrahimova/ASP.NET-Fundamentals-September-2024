@@ -5,7 +5,7 @@ namespace CinemaApp.Services.Data.Interfaces
 {
     public interface IMovieService
     {
-        Task<IEnumerable<AllMoviesIndexViewModel>> GetAllMoviesAsync();
+        Task<IEnumerable<AllMoviesIndexViewModel>> GetAllMoviesAsync(AllMoviesSearchFilterViewModel inputModel );
 
         Task <bool> AddMovieAsync(AddMovieInputModel inputModel);
 

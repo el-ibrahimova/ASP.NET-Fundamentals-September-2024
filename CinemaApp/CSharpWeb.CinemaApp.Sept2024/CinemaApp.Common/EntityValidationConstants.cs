@@ -18,6 +18,9 @@
             public const string ReleaseDateFormat = "MM/yyyy";
             public const int ImageUrlMinLength = 8;
             public const int ImageUrlMaxLength = 2083;
+
+            public const string YearFilterRangeRegex = "^(\\d{4})\\s*\\-\\s*(\\d{4})$";
+
         }
 
 

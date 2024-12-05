@@ -24,10 +24,10 @@
             <select asp-for="GenreFilter" class="form-control">
                 @if (Model.AllGenres != null)
                 {
-                    <option value="">@String.Empty </option>
+                    <option value="">Filter by genre...</option>
                     foreach (string genre in Model.AllGenres)
                     {
-                        <option value="genre">@genre</option>
+                        <option value="@genre">@genre</option>
                     }
                 }
 
