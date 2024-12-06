@@ -21,5 +21,7 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<AvailableTicketsViewModel?> GetAvailableTicketsByIdAsync(Guid cinemaId, Guid movieId);
 
         Task<IEnumerable<string>> GetAllGenresAsync();
+
+        Task<int> GetMoviesCountAsync();
     }
 }

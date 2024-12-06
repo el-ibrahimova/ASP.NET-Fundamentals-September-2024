@@ -70,6 +70,13 @@ namespace CinemaApp.Services.Data
                 }
             }
 
+            if (inputModel.CurrentPage.HasValue && inputModel.EntitiesPerPage.HasValue)
+            {
+                allMoviesQuery = allMoviesQuery
+                    .Skip(inputModel.EntitiesPerPage.Value * (inputModel.CurrentPage.Value - 1))
+                    .Take(inputModel.EntitiesPerPage.Value);
+            }
+
             return await allMoviesQuery
                 .To<AllMoviesIndexViewModel>()
                 .ToArrayAsync();
@@ -284,6 +291,13 @@ namespace CinemaApp.Services.Data
                 .ToArrayAsync();
 
             return allGenres;
+        }
+
+        public async Task<int> GetMoviesCountAsync()
+        {
+            return await this.movieRepository
+                .GetAllAttached()
+                .CountAsync();
         }
     }
 }
