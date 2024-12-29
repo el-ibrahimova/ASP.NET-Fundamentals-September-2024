@@ -22,6 +22,6 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task<IEnumerable<string>> GetAllGenresAsync();
 
-        Task<int> GetMoviesCountAsync();
+        Task<int> GetMoviesCountByFilterAsync(AllMoviesSearchFilterViewModel inputModel);
     }
 }

@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography;
-using CinemaApp.Common;
-using CinemaApp.Services.Data.Interfaces;
-using CinemaApp.Web.Infrastructure.Extensions;
+﻿using CinemaApp.Services.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using static CinemaApp.Common.ApplicationConstants;
 
 namespace CinemaApp.Web.Controllers
 {
@@ -36,6 +34,7 @@ namespace CinemaApp.Web.Controllers
 
             if (!isManager)
             {
+                TempData[ErrorMessage] = "You must be a manager to create Cinema";
                 return this.RedirectToAction(nameof(Index));
             }
 

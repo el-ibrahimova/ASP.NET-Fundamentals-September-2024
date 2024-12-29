@@ -1,4 +1,6 @@
 using CinemaApp.Data.Seeding.DataTransferObjects;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 
 namespace CinemaApp.Web
 {
@@ -48,7 +50,13 @@ namespace CinemaApp.Web
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
 
-            builder.Services.AddControllersWithViews();
+            
+            builder.Services.AddControllersWithViews(cfg =>
+            {
+                // very important security check
+                cfg.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+            ;
             builder.Services.AddRazorPages();
 
             WebApplication app = builder.Build();

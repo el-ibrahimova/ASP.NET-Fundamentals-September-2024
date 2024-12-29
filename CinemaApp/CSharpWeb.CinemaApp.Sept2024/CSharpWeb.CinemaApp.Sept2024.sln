@@ -25,7 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Services.Data", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Services.Mapping", "CinemaApp.Services.Mapping\CinemaApp.Services.Mapping.csproj", "{735FAAE8-D000-45A6-81AB-1A323A90537B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.WebApi", "CinemaApp.WebApi\CinemaApp.WebApi.csproj", "{7C265632-9F60-40C1-8470-81378EF76CDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.WebApi", "CinemaApp.WebApi\CinemaApp.WebApi.csproj", "{7C265632-9F60-40C1-8470-81378EF76CDD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7A4743C1-C210-4713-A25E-1C6564F8AC53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.Services.Tests", "CinemaApp.Services.Tests\CinemaApp.Services.Tests.csproj", "{D93B25FC-0D36-4FAB-BC0B-64829652036F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,10 @@ Global
 		{7C265632-9F60-40C1-8470-81378EF76CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C265632-9F60-40C1-8470-81378EF76CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C265632-9F60-40C1-8470-81378EF76CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93B25FC-0D36-4FAB-BC0B-64829652036F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93B25FC-0D36-4FAB-BC0B-64829652036F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93B25FC-0D36-4FAB-BC0B-64829652036F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93B25FC-0D36-4FAB-BC0B-64829652036F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +89,7 @@ Global
 		{82425094-A83B-4B8A-8522-E25F3F1F61ED} = {4E3451D6-6493-4E1E-B8C0-BAB46D7DB72A}
 		{A652D74B-C264-4E7B-8263-6A594B3C02BF} = {8E6374A2-7EE6-4405-A1AE-EA074792207C}
 		{735FAAE8-D000-45A6-81AB-1A323A90537B} = {8E6374A2-7EE6-4405-A1AE-EA074792207C}
+		{D93B25FC-0D36-4FAB-BC0B-64829652036F} = {7A4743C1-C210-4713-A25E-1C6564F8AC53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCFE0240-CD16-4C86-891D-0AB1A422DDA3}

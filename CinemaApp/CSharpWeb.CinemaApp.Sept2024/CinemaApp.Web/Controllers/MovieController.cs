@@ -24,20 +24,21 @@ namespace CinemaApp.Web.Controllers
         {
             IEnumerable<AllMoviesIndexViewModel> allMovies = await this.movieService.GetAllMoviesAsync(inputModel);
 
-            AllMoviesSearchFilterViewModel viewModel = new AllMoviesSearchFilterViewModel();
+            int allMoviesCount = await this.movieService.GetMoviesCountByFilterAsync(inputModel);
 
-
-            viewModel.Movies = allMovies;
-            viewModel.AllGenres = await this.movieService.GetAllGenresAsync();
-
-            viewModel.CurrentPage = inputModel.CurrentPage;
-
-            viewModel.TotalPages = (int)Math.Ceiling(((double)allMovies.Count() / inputModel.EntitiesPerPage!.Value));
-
+            AllMoviesSearchFilterViewModel viewModel = new AllMoviesSearchFilterViewModel
+            {
+                Movies = allMovies,
+                SearchQuery = inputModel.SearchQuery,
+                GenreFilter = inputModel.GenreFilter,
+                YearFilter = inputModel.YearFilter,
+                AllGenres = await this.movieService.GetAllGenresAsync(),
+                CurrentPage = inputModel.CurrentPage,
+                TotalPages = (int)Math.Ceiling(((double)allMoviesCount/inputModel.EntitiesPerPage!.Value))
+            };
 
             return this.View(viewModel);
         }
-
 
         [Authorize]
         [HttpGet]

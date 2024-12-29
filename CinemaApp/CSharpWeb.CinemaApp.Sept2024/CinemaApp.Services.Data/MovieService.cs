@@ -1,22 +1,18 @@
-﻿
-using System.Collections;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using CinemaApp.Web.ViewModels.Cinema;
+﻿using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.CinemaMovie;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text.RegularExpressions;
 
 namespace CinemaApp.Services.Data
 {
-    using System.Globalization;
     using CinemaApp.Data.Models;
     using CinemaApp.Data.Repository.Interfaces;
-    using Mapping;
-    using Web.ViewModels.Movie;
     using Interfaces;
+    using Mapping;
     using Microsoft.EntityFrameworkCore;
-    using static Common.EntityValidationConstants.Movie;
+    using System.Globalization;
+    using Web.ViewModels.Movie;
     using static Common.ApplicationConstants;
+    using static Common.EntityValidationConstants.Movie;
 
     public class MovieService : BaseService, IMovieService
     {
@@ -63,7 +59,7 @@ namespace CinemaApp.Services.Data
                 {
                     bool isValidNumber = int.TryParse(inputModel.YearFilter, out int year);
 
-                    if(isValidNumber)
+                    if (isValidNumber)
                     {
                         allMoviesQuery = allMoviesQuery.Where(m => m.ReleaseDate.Year == year);
                     }
@@ -92,7 +88,7 @@ namespace CinemaApp.Services.Data
                 return false;
             }
 
-           Movie movie = new Movie();
+            Movie movie = new Movie();
 
             AutoMapperConfig.MapperInstance.Map(inputModel, movie);
             movie.ReleaseDate = releaseDate;
@@ -252,7 +248,7 @@ namespace CinemaApp.Services.Data
             editedMovie.Id = movieGuid;
             editedMovie.ReleaseDate = releaseDate;
 
-            if (formModel.ImageUrl ==null || formModel.ImageUrl.Equals("No image"))
+            if (formModel.ImageUrl == null || formModel.ImageUrl.Equals("No image"))
             {
                 editedMovie.ImageUrl = NoImageUrl;
             }
@@ -284,7 +280,7 @@ namespace CinemaApp.Services.Data
 
         public async Task<IEnumerable<string>> GetAllGenresAsync()
         {
-            IEnumerable<string> allGenres =await this.movieRepository
+            IEnumerable<string> allGenres = await this.movieRepository
                 .GetAllAttached()
                 .Select(m => m.Genre)
                 .Distinct()
@@ -293,11 +289,20 @@ namespace CinemaApp.Services.Data
             return allGenres;
         }
 
-        public async Task<int> GetMoviesCountAsync()
+        public async Task<int> GetMoviesCountByFilterAsync(AllMoviesSearchFilterViewModel inputModel)
         {
-            return await this.movieRepository
-                .GetAllAttached()
-                .CountAsync();
+            AllMoviesSearchFilterViewModel inputModelCopy = new()
+            {
+                CurrentPage = null,
+                EntitiesPerPage = null,
+                SearchQuery = inputModel.SearchQuery,
+                GenreFilter = inputModel.GenreFilter,
+                YearFilter = inputModel.YearFilter
+            };
+
+            int moviesCount = (await this.GetAllMoviesAsync(inputModelCopy)).Count();
+
+            return moviesCount;
         }
     }
 }

@@ -30,7 +30,6 @@
                         <option value="@genre">@genre</option>
                     }
                 }
-
             </select>
         </div>
         <div class="col">
@@ -113,10 +112,10 @@
         {
             <li class="page-item">
                 <a class="page-link" asp-action="Index"
-                   asp-route-pageNumber="@(Model.CurrentPage-1)"
+                   asp-route-currentPage="@(Model.CurrentPage-1)"
                    asp-route-searchQuery="@Model.SearchQuery"
-                   asp-route-genre="@Model.GenreFilter"
-                   asp-route-releaseYear="@Model.YearFilter">
+                   asp-route-genreFilter="@Model.GenreFilter"
+                   asp-route-yearFilter="@Model.YearFilter">
                     Previous
                 </a>
             </li>
@@ -126,10 +125,10 @@
         {
             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                 <a class="page-link" asp-action="Index"
-                   asp-route-pageNumber="@i"
+                   asp-route-currentPage="@i"
                    asp-route-searchQuery="@Model.SearchQuery"
-                   asp-route-genre="@Model.GenreFilter"
-                   asp-route-releaseYear="@Model.YearFilter">
+                   asp-route-genreFilter="@Model.GenreFilter"
+                   asp-route-yearFilter="@Model.YearFilter">
                     @i
                 </a>
             </li>
@@ -139,10 +138,10 @@
         {
             <li class="page-item">
                 <a class="page-link" asp-action="Index"
-                   asp-route-pageNumber="@(Model.CurrentPage + 1 )"
+                   asp-route-currentPage="@(Model.CurrentPage + 1 )"
                    asp-route-searchQuery="@Model.SearchQuery"
-                   asp-route-genre="@Model.GenreFilter"
-                   asp-route-releaseYear="@Model.YearFilter">
+                   asp-route-genreFilter="@Model.GenreFilter"
+                   asp-route-yearFilter="@Model.YearFilter">
                     Next
                 </a>
             </li>
